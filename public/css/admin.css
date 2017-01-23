@@ -1,0 +1,251 @@
+body {
+    font-family: 'Abel', PT Sans;
+    font-size: 16px;
+}
+
+.left-bar {
+    position: fixed;
+    height: 100%;
+    background: #606e8e;
+}
+
+.left-bar navbar ul {
+    margin: 100px 0;
+}
+
+.left-bar navbar ul li {
+    width: 116%;
+    padding: 10px 0;
+    border-radius: 2px;
+    margin-left: -23px;
+}
+
+.left-bar navbar ul li:hover {
+    background: #4d576f;
+    border-left: solid 4px #91a4d1;
+    cursor: pointer;
+    transition: 0.1s;
+    transition-delay: 0.1s;
+}
+
+.left-bar navbar ul li a {
+    color: #fff;
+    margin: 0 70px;
+}
+
+.main-container {
+    height: 100%;
+    position: absolute;
+    right: 0 !important;
+    background: #fff;
+}
+
+.main-container .main-container_content {
+    margin: 30px 5px;
+}
+
+.main-statistic {
+    min-height: 200px;
+    height: auto;
+    border: solid 2px #5b6681;
+    border-top: 0;
+}
+
+.main-statistic .title {
+    padding-top: 15px;
+    height: 40px;
+    background: #606e8e;
+}
+
+.main-statistic .title h5 {
+    color: #fff;
+    margin-top: -6px;
+    font-size: 1.1em;
+}
+
+.main-statistic ul {
+    margin-top: 5px;
+}
+
+.main-statistic ul li {
+    color: #5b6681;
+    padding-top: 15px !important;
+    border-top: dashed 2px #5b6681;
+}
+
+.main-statistic ul li:nth-child(1) {
+    border: none;
+}
+
+.main-statistic ul li span:nth-child(1) {
+    background: rgba(0, 0, 0, .1);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.search .input-field input {
+    background: rgba(0, 0, 0, .1);
+    border: none;
+    border-radius: 2px;
+    padding-left: 3px;
+    border-bottom: solid 2px #606e8e;
+}
+
+.search .input-field input:focus {
+    background: #606e8e;
+    border: none !important;
+    box-shadow: none !important;
+    transition: 0.1s;
+    color: #fff;
+    transition-delay: 0.2s;
+}
+
+.search .input-field input:focus + label {
+    padding-bottom: 5px;
+}
+
+.search .input-field label {
+    padding-left: 5px;
+    color: #969696;
+}
+
+.edit-button {
+    box-shadow: none;
+    border: none;
+    line-height: 35px;
+    border-radius: 2px;
+    height: 35px !important;
+    padding: 0 12px !important;
+    text-transform: none !important;
+    background: #606e8e !important;
+}
+
+.info-title {
+    height: 215px;
+    border-bottom: dashed 2px #606e8e;
+}
+
+.info-title div .info-title_hr {
+    border-bottom: dashed 2px #606e8e;
+}
+
+.info-title div {
+    padding: 0px 0 !important;
+}
+
+.info-title div:nth-child(2) {
+    border-right: none;
+}
+
+.info-title div h5 {
+    font-size: 1.1em;
+}
+
+.info-title div .info-title_info {
+    margin: 2px 1px !important;
+    border-right: dashed 2px #606e8e;
+}
+
+.info-title div .info-title_info p {
+    width: 97%;
+    padding-top: 10px;
+    margin: 10px 0;
+    border-top: solid 2px rgba(0, 0, 0, .1);
+    color: #565656;
+    float: left;
+}
+
+.info-title div .info-title_info p:nth-child(1) {
+    border: none;
+}
+
+.info-title div .info-title_info p span {
+    float: right;
+}
+
+.complaint-container {
+    margin: 10px 0;
+}
+
+.complaint-container .title {
+    height: 35px;
+    background-color: #606e8e;
+    border-radius: 2px;
+}
+
+.complaint-container .title h5 {
+    line-height: 35px;
+    color: #fff;
+    font-size: 1.2em;
+}
+
+.pagination-container {
+    margin: 10px 5px !important;
+}
+
+.h5-low {
+    font-size: 1.2em;
+}
+
+.user-edit_container .input-field input {
+    border-bottom: solid 2px #606e8e;
+}
+
+.user-edit_container .input-field input:focus {
+    box-shadow: none !important;
+    background: #606e7a;
+    transition: 0.2s;
+    transition-delay: 0.1s;
+    color: #fff;
+    border-bottom: none !important;
+}
+
+.user-edit_container .input-field input:focus + label {
+    padding-bottom: 6px;
+}
+
+.user_image {
+    max-height: 180px;
+}
+
+.form-buttons {
+    position: absolute;
+    bottom: 10px;
+}
+
+.form-buttons button {
+    background: #606e7a;
+    border: none;
+    box-shadow: none;
+    text-transform: none;
+}
+
+.form-buttons button:hover {
+    color: #565656;
+    background: none;
+    box-shadow: none;
+    border-bottom: solid 2px #606e8e;
+    transition: 0.2s;
+    transition-delay: 0.1s;
+}
+
+.tabs .tab a {
+    color: rgb(149, 167, 209) !important;
+}
+
+.tabs .indicator {
+    background-color: #606e8e !important;
+}
+
+.tabs .tab a:hover, .tabs .tab a.active {
+    color: #535e77 !important;
+}
+
+.anime-crup .row .input-field input {
+    border-bottom: solid 2px #b4c4ea;
+}
+
+.anime-crup .row .input-field input:focus {
+    border-bottom: solid 2px #7e8baa;
+    box-shadow: none !important;
+}
