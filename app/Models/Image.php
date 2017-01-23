@@ -78,14 +78,13 @@ class Image extends Model
      *
      * Метод который генерирует название фотографии если работа с аватаркой пользователя
      * Имя для фотографии генерируется другим методом , чем для остальных
-     * Название формируется с учетом: логина пользователя и его айди, так же, метод вызывает другой метод
-     * Который ищет фотографию с таким уже названием и удаляет ее
+     * Название формируется с учетом: логина пользователя и его айди
      * @internal param string $userLogin
      */
     private function userAvatarName( string $userNameAvatar ): string
     {
         // Метод для удаления ранее загруженной аватарки
-        $this->userDeleteImage($userNameAvatar);
+        $this->userRenameImage($userNameAvatar);
 
         return $userNameAvatar;
     }
@@ -96,7 +95,7 @@ class Image extends Model
      *
      * Метод для удаления ранее загруженной аватарки пользователя
      */
-    private function userDeleteImage( string $userNameAvatar )
+    public function userRenameImage( string $userNameAvatar )
     {
         // Ищем аватарку пользователя по bundle и name
         // В name - логин и айди пользователя
@@ -105,8 +104,8 @@ class Image extends Model
                 ->first();
 
         if ( null != $image || false != $image ) {
-            $this->deleteImageFromDir($image->name . $image->mimetype[1]);
-            $image->delete();
+            $image->name = $userNameAvatar;
+            $image->save();
         }
     }
 
@@ -145,9 +144,46 @@ class Image extends Model
 
     /**
      * @param string $name
+     * @param string $dir
      */
-    private function deleteImageFromDir( string $name )
+    public function deleteImageFromDir( string $name, string $dir ): void
     {
-        Storage::delete('images/user/' . $name);
+        Storage::delete('images/' . $dir . '/' . $name);
+    }
+
+    /**
+     * Метод для изменения название картинки в папке.
+     * Используется (сейчас) для изменения названия аватарки пользователя
+     *
+     * @param string $oldName
+     * @param string $newName
+     * @param string $dir
+     */
+    public function renameAvatarDir( string $oldName, string $newName, string $dir ): void
+    {
+        Storage::move('images/' . $dir . '/' . $oldName, 'images/' . $dir . '/' . $newName);
+    }
+
+    /**
+     * @param string $name
+     * @param int $imageId
+     * @param bool $user
+     * @param int $userEntity
+     *
+     * Метод для изменения название картинки.
+     * Если $user = true, то в entity_id попадет еще и айди пользователя. Связанно это с тем, что для загрузки аватарки
+     * используется другая логика, чем для других картинок.
+     */
+    public function renameAvatar(string $name, int $imageId, bool $user = false, int $userEntity = 0): void
+    {
+        $image = Image::findOrFaild($imageId);
+
+        if ( $user == true ) {
+            $image->entity_id = $userEntity;
+        }
+        $image->name = $name;
+        $image->status = 1;
+
+        $image->save();
     }
 }

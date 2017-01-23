@@ -18,12 +18,12 @@ class AuthController extends Controller
         return view('user.auth.register');
     }
 
-    public function postRegister(Request $request)
+    public function postRegister( Request $request )
     {
         $validator = Validator::make($request->all(), [
                 'user.email' => 'required|min:6|max:30|unique:users,email',
                 'user.password' => 'required|min:4|max:30',
-                'user.login' => 'required|min:4|max:25'
+                'user.login' => 'required|min:4|max:25',
         ]);
 
         if ( $validator->fails() ) {
@@ -58,10 +58,10 @@ class AuthController extends Controller
 
         if ( request()->hasFile('image') ) {
             // Метод для изменения имени загруженной аватарки в базе данных
-            $this->renameUserAvatar($userNameForAvatar, $user->id, $request->input('user.imageId'));
+            (new Image)->renameAvatar($userNameForAvatar, $request->input('user.imageId'), true, $user->id);
 
             // Метод для изменения имени загружнной аватрки в папке
-            $this->renameUserAvatarDir($request->input('user.imageName'), $userNameForAvatar, $request->input('user.imageType'));
+            (new Image)->renameAvatarDir($request->input('user.imageName'), $userNameForAvatar, 'users');
         }
 
         return response()->json(['success' => 'Спасибо за регистрацию']);
@@ -71,7 +71,7 @@ class AuthController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function postAuth(Request $request)
+    public function postAuth( Request $request )
     {
         $validator = Validator::make($request->all(), [
                 'email' => 'required',
@@ -82,42 +82,10 @@ class AuthController extends Controller
             return response()->json($validator->messages(), 200);
         }
 
-        if ( \Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')]) )
-        {
+        if ( \Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')]) ) {
             return response()->json(['success' => 'Успех']);
         } else {
             return response()->json(['error' => 'Неверно веденные данные.']);
         }
     }
-
-    /**
-     * @param string $name
-     * @param int $userId
-     * @param int $imageId
-     *
-     * Метод изменяет название картинки и заполняет ячейку entity_id
-     */
-    private function renameUserAvatar(string $name, int $userId, int $imageId)
-    {
-        $image = Image::findOrFail($imageId);
-
-        $image->entity_id = $userId;
-        $image->name = $name;
-        $image->status = 1;
-
-        $image->save();
-    }
-
-    /**
-     * @param string $oldName
-     * @param string $newName
-     * @param string $imageType
-     *
-     * Метод изменяет название фотографии в папке....
-     */
-    private function renameUserAvatarDir(string $oldName, string $newName, string $imageType): void
-    {
-        Storage::move('images/user/'.$oldName, 'images/user/'.$newName.'.'.explode('/', $imageType)[1]);
-    }
-
 }
