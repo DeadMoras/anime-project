@@ -18,8 +18,8 @@ class CreateImagesTable extends Migration
             $table->integer('entity_id')->nullable();
             $table->string('name');
             $table->string('bundle');
-            $table->integer('size');
-            $table->string('mimetype');
+            $table->integer('size')->nullable();
+            $table->string('mimetype')->nullable();
             $table->tinyInteger('status')->default(0);
         });
     }

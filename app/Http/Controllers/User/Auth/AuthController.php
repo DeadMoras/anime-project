@@ -55,13 +55,20 @@ class AuthController extends Controller
          * Остальная информация попадет в другую таблицу ('user_info')
          */
         $userNameForAvatar = (new UserInfo)->newInfo($user->id);
+        $userNameForAvatarMime = $userNameForAvatar . '.' . explode('/', request()->input('user.imageType'))[1];
 
-        if ( request()->hasFile('image') ) {
+        if ( request()->input('imageUploaded') == true ) {
             // Метод для изменения имени загруженной аватарки в базе данных
-            (new Image)->renameAvatar($userNameForAvatar, $request->input('user.imageId'), true, $user->id);
+            (new Image)->renameAvatar($userNameForAvatarMime, $request->input('user.imageId'), true, $user->id);
 
             // Метод для изменения имени загружнной аватрки в папке
-            (new Image)->renameAvatarDir($request->input('user.imageName'), $userNameForAvatar, 'users');
+            (new Image)->renameAvatarDir($request->input('user.imageName'), $userNameForAvatarMime, 'user');
+        } else {
+            dd(request()->file('image'));
+            $userDefaultImage = (new Image)->createNewDefaultImage('users');
+
+            // Метод для изменения имени загруженной аватарки в базе данных
+            (new Image)->renameAvatar('default.jpg', $userDefaultImage->id, true, $user->id);
         }
 
         return response()->json(['success' => 'Спасибо за регистрацию']);

@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Anime extends Model
 {
-    protected $table = 'anime.php';
+    protected $table = 'anime';
 }

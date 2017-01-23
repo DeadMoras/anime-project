@@ -10,19 +10,19 @@ Vue.component('social-icon', {
     }
 });
 
-Vue.filter('minLength', function(value, nameInput, min, max) {
+Vue.filter('minLength', function (value, nameInput, min, max) {
     vm.error[nameInput] = {};
 
-    if( value.length < min ) {
+    if (value.length < min) {
         vm.error[nameInput].min = 'Поле ' + nameInput + ' не может содержать менее ' + min + ' символов';
         vm.disabledButton = true;
-    } else if( value.length > max ) {
+    } else if (value.length > max) {
         vm.error[nameInput].max = 'Поле ' + nameInput + ' не может содержать более ' + max + ' символов';
         vm.disabledButton = true;
-    } else if( value.length > min && value.length < max ) {
-        if( vm.error !== undefined ) {
+    } else if (value.length > min && value.length < max) {
+        if (vm.error !== undefined) {
             delete vm.error[nameInput];
-            if( !vm.error.email && !vm.error.login && !vm.error.password ) {
+            if (!vm.error.email && !vm.error.login && !vm.error.password) {
                 vm.disabledButton = false;
             }
         }
@@ -33,6 +33,7 @@ var vm = new Vue({
     el: '#register-form',
     data: {
         image: '',
+        imageUploaded: false,
         user: {
             login: '',
             email: '',
@@ -73,7 +74,7 @@ var vm = new Vue({
         uploadImage(e) {
             this.justWait = true;
             let files = e.target.files || e.dataTransfer.files;
-            if( !files.length ) {
+            if (!files.length) {
                 return;
             }
 
@@ -90,6 +91,8 @@ var vm = new Vue({
                 vm.user.imageType = response.body.image.mimetype;
             });
 
+            this.imageUploaded = true;
+
             this.createImage(files[0]);
         },
         createImage(file) {
@@ -105,14 +108,15 @@ var vm = new Vue({
         },
         removeImage(e) {
             this.image = '';
+            this.imageUploaded = false;
         },
         checkRePassword() {
-            if( this.user.password && this.user.password !== this.user.passwordConfirmation ) {
+            if (this.user.password && this.user.password !== this.user.passwordConfirmation) {
                 this.errorPasswordRepeat = true;
                 this.error.passwordError = 'Пароли не совпадают';
                 this.disabledButton = true;
             } else {
-                if( !this.error.email && !this.error.login && !this.error.password ) {
+                if (!this.error.email && !this.error.login && !this.error.password) {
                     this.disabledButton = false;
                 }
                 this.errorPasswordRepeat = false;
@@ -123,10 +127,13 @@ var vm = new Vue({
             this.$options.filters.minLength(value, nameInput, min, max);
         },
         justRegister() {
-            this.$http.post('/register', {user: this.user}).then((response) => {
-                if ( typeof response.body == "object" ) {
+            this.$http.post('/register', {
+                user: this.user,
+                imageUploaded: this.imageUploaded,
+            }).then((response) => {
+                if (typeof response.body == "object") {
                     let responseServer = response.body;
-                    for ( let k in responseServer ) {
+                    for (let k in responseServer) {
                         Materialize.toast(responseServer[k].toString(), 3000);
                     }
                 } else {
@@ -137,8 +144,8 @@ var vm = new Vue({
             });
         },
         socialInput(iconName) {
-            if ( !this.socialIcons.iconName ) {
-                if ( this.socialIcons[iconName] == false ) {
+            if (!this.socialIcons.iconName) {
+                if (this.socialIcons[iconName] == false) {
                     this.socialIcons[iconName] = true;
                 } else {
                     this.socialIcons[iconName] = false;
@@ -146,7 +153,7 @@ var vm = new Vue({
             }
         },
         socialIconsFor(iconName) {
-            if ( this.socialIcons[iconName] == true ) {
+            if (this.socialIcons[iconName] == true) {
                 return true;
             } else {
                 return false;
@@ -154,7 +161,7 @@ var vm = new Vue({
         }
     },
     computed: {
-        errorButton: function() {
+        errorButton: function () {
             return {
                 'col s12 btn': 'btn',
                 'disabled': this.disabledButton,

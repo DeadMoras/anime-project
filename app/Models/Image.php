@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Image as MImage;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image as LImage;
 
 class Image extends Model
@@ -120,7 +121,7 @@ class Image extends Model
         $image = new MImage;
 
         $image->name = $data['name'];
-        $image->bundle = $data['bundle'] . explode($data['mimiType'][1]);
+        $image->bundle = $data['bundle'];
         $image->size = $data['size'];
         $image->mimetype = $data['mimiType'];
         $image->status = 0;
@@ -174,16 +175,39 @@ class Image extends Model
      * Если $user = true, то в entity_id попадет еще и айди пользователя. Связанно это с тем, что для загрузки аватарки
      * используется другая логика, чем для других картинок.
      */
-    public function renameAvatar(string $name, int $imageId, bool $user = false, int $userEntity = 0): void
+    public function renameAvatar( string $name, int $imageId, bool $user = false, int $userEntity = 0 ): void
     {
-        $image = Image::findOrFaild($imageId);
+        $image = Image::findOrFail($imageId);
 
         if ( $user == true ) {
             $image->entity_id = $userEntity;
         }
+
         $image->name = $name;
         $image->status = 1;
 
         $image->save();
+    }
+
+    /**
+     * Метод для создания записи в случае, если пользователь не загрузил аватарку.
+     *
+     * Может использоваться в любых случаях.
+     * @param string $bundle
+     * @param bool $user
+     * @return $this
+     */
+    public function createNewDefaultImage( string $bundle, $user = false )
+    {
+        if ( true == $user ) {
+            $this->name = 'default.jpg';
+        } else {
+            $this->name = $bundle . time();
+        }
+
+        $this->bundle = $bundle;
+        $this->save();
+
+        return $this;
     }
 }
