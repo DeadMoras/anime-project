@@ -88,85 +88,85 @@
                     </div>
                     <div class="input-field col s12 social-icons">
                         <div class="div-social_icon"
-                             @click="socialInput('registerVk')">
-                            <social-icon class="fa fa-vk">
-                            </social-icon>
-                        </div>
-                        <div class="div-social_icon"
-                             @click="socialInput('registerSkype')">
-                            <social-icon class="fa fa-skype">
-                            </social-icon>
-                        </div>
-                        <div class="div-social_icon"
-                             @click="socialInput('registerTwitter')">
-                            <social-icon class="fa fa-twitter">
-                            </social-icon>
-                        </div>
-                        <div class="div-social_icon"
-                             @click="socialInput('registerFacebook')">
-                            <social-icon class="fa fa-facebook">
-                            </social-icon>
-                        </div>
-
-                        <div v-if="socialIconsFor('registerVk')"
-                             class="social_icon-css">
-                            <div class="input-field col s12"
-                                 id="register-input_div--register-vk">
-                                <input type="text"
-                                       id="register-input_vk"
-                                       v-model="user.registerVk">
-                                <label for="register-input_vk">Ваш vk</label>
-                                </div>
-                        </div>
-                        <div v-if="socialIconsFor('registerSkype')"
-                             class="social_icon-css">
-                            <div class="input-field col s12"
-                                 id="register-input_div--register-skype">
-                                <input type="text"
-                                       id="register-input_skype"
-                                       v-model="user.registerSkype">
-                                <label for="register-input_skype">Ваш skype</label>
-                                </div>
-                        </div>
-                        <div v-if="socialIconsFor('registerFacebook')"
-                             class="social_icon-css">
-                            <div class="input-field col s12"
-                                 id="register-input_div--register-facebook">
-                                <input type="text"
-                                       id="register-input_facebook"
-                                       v-model="user.registerFacebook">
-                                <label for="register-input_facebook">Ваш facebook</label>
-                                </div>
-                        </div>
-                        <div v-if="socialIconsFor('registerTwitter')"
-                             class="social_icon-css">
-                            <div class="input-field col s12"
-                                 id="register-input_div--register-twitter">
-                                <input type="text"
-                                       id="register-input_twitter"
-                                       v-model="user.registerTwitter">
-                                <label for="register-input_twitter">Ваш twitter</label>
-                                </div>
-                        </div>
+                        @click="socialInput('registerVk')">
+                        <social-icon class="fa fa-vk">
+                        </social-icon>
                     </div>
-                    <div class="row col s12 ul-errors" v-if="disabledButton">
-                        <ul>
-                            <li v-for="item in error">
-                                @{{ item.min }}
-                                @{{ item.max }}
-                                @{{ item.required }}
-                            </li>
-                            <li>
-                                @{{ error.passwordError }}
-                            </li>
-                        </ul>
-                    </div>
+                    <div class="div-social_icon"
+                    @click="socialInput('registerSkype')">
+                    <social-icon class="fa fa-skype">
+                    </social-icon>
                 </div>
-                <a href="#"
-                   :class="errorButton"
-                   @click.prevent="justRegister()">Зарегистрироваться</a>
+                <div class="div-social_icon"
+                @click="socialInput('registerTwitter')">
+                <social-icon class="fa fa-twitter">
+                </social-icon>
+            </div>
+            <div class="div-social_icon"
+            @click="socialInput('registerFacebook')">
+            <social-icon class="fa fa-facebook">
+            </social-icon>
+        </div>
+
+        <div v-if="socialIconsFor('registerVk')"
+             class="social_icon-css">
+            <div class="input-field col s12"
+                 id="register-input_div--register-vk">
+                <input type="text"
+                       id="register-input_vk"
+                       v-model="user.registerVk">
+                <label for="register-input_vk">Ваш vk</label>
             </div>
         </div>
+        <div v-if="socialIconsFor('registerSkype')"
+             class="social_icon-css">
+            <div class="input-field col s12"
+                 id="register-input_div--register-skype">
+                <input type="text"
+                       id="register-input_skype"
+                       v-model="user.registerSkype">
+                <label for="register-input_skype">Ваш skype</label>
+            </div>
+        </div>
+        <div v-if="socialIconsFor('registerFacebook')"
+             class="social_icon-css">
+            <div class="input-field col s12"
+                 id="register-input_div--register-facebook">
+                <input type="text"
+                       id="register-input_facebook"
+                       v-model="user.registerFacebook">
+                <label for="register-input_facebook">Ваш facebook</label>
+            </div>
+        </div>
+        <div v-if="socialIconsFor('registerTwitter')"
+             class="social_icon-css">
+            <div class="input-field col s12"
+                 id="register-input_div--register-twitter">
+                <input type="text"
+                       id="register-input_twitter"
+                       v-model="user.registerTwitter">
+                <label for="register-input_twitter">Ваш twitter</label>
+            </div>
+        </div>
+    </div>
+    <div class="row col s12 ul-errors" v-if="disabledButton">
+        <ul>
+            <li v-for="item in error">
+                @{{ item.min }}
+                @{{ item.max }}
+                @{{ item.required }}
+            </li>
+            <li>
+                @{{ error.passwordError }}
+            </li>
+        </ul>
+    </div>
+    </div>
+    <a href="#"
+       :class="errorButton"
+       @click.prevent="justRegister()">Зарегистрироваться</a>
+    </div>
+    </div>
     </div>
 
 @endsection

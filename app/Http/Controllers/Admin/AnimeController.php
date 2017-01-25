@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\UploadFiles\UploadFiles;
+use App\UploadFiles\Yandex\YandexUpload;
 use Illuminate\Http\Request;
 
 class AnimeController extends Controller

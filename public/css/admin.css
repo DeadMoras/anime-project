@@ -249,3 +249,27 @@ body {
     border-bottom: solid 2px #7e8baa;
     box-shadow: none !important;
 }
+
+.choose-buttons_upload {
+    margin: 15px 10px;
+}
+
+.choose-buttons_upload a {
+    border: none;
+    border-bottom: solid 2px #7e8baa;
+    color: #565656;
+    height: 45px;
+    line-height: 45px;
+    background: none;
+    box-shadow: none;
+}
+
+.choose-buttons_upload a:hover {
+    background: #7e8baa;
+    color: #fff;
+    box-shadow: none;
+}
+
+.choose-buttons_upload a:nth-child(2) {
+    float: right;
+}

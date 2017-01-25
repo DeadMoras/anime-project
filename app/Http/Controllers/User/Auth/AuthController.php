@@ -64,7 +64,6 @@ class AuthController extends Controller
             // Метод для изменения имени загружнной аватрки в папке
             (new Image)->renameAvatarDir($request->input('user.imageName'), $userNameForAvatarMime, 'user');
         } else {
-            dd(request()->file('image'));
             $userDefaultImage = (new Image)->createNewDefaultImage('users');
 
             // Метод для изменения имени загруженной аватарки в базе данных

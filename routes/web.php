@@ -14,3 +14,7 @@ Route::group(['namespace' => 'User'], function() {
 
 //image controller
 Route::post('/save_image', 'ImageController@saveImage');
+
+// Upload service
+Route::get('/upload-service/token', '\App\UploadFiles\TokenService@getToken');
+Route::post('/vk-save-video', '\App\UploadFiles\UploadDelegator@getUpload');
