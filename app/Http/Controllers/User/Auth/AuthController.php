@@ -7,7 +7,6 @@ use App\Models\Image;
 use App\Models\Email;
 use App\Models\User;
 use App\Models\UserInfo;
-use Illuminate\Support\Facades\Storage;
 use Validator;
 use Illuminate\Http\Request;
 
@@ -18,7 +17,7 @@ class AuthController extends Controller
         return view('user.auth.register');
     }
 
-    public function postRegister( Request $request )
+    public function postRegister(Request $request)
     {
         $validator = Validator::make($request->all(), [
                 'user.email' => 'required|min:6|max:30|unique:users,email',
@@ -26,11 +25,11 @@ class AuthController extends Controller
                 'user.login' => 'required|min:4|max:25',
         ]);
 
-        if ( $validator->fails() ) {
+        if ($validator->fails()) {
             return response()->json($validator->messages(), 200);
         }
 
-        if ( $request->input('user.password') !== $request->input('user.passwordConfirmation') ) {
+        if ($request->input('user.password') !== $request->input('user.passwordConfirmation')) {
             return response()->json(['error' => 'Пароли не совпадают'], 200);
         }
 
@@ -55,9 +54,9 @@ class AuthController extends Controller
          * Остальная информация попадет в другую таблицу ('user_info')
          */
         $userNameForAvatar = (new UserInfo)->newInfo($user->id);
-        $userNameForAvatarMime = $userNameForAvatar . '.' . explode('/', request()->input('user.imageType'))[1];
 
-        if ( request()->input('imageUploaded') == true ) {
+        if (request()->input('imageUploaded') == true) {
+            $userNameForAvatarMime = $userNameForAvatar . '.' . explode('/', request()->input('user.imageType'))[1];
             // Метод для изменения имени загруженной аватарки в базе данных
             (new Image)->renameAvatar($userNameForAvatarMime, $request->input('user.imageId'), true, $user->id);
 
@@ -77,18 +76,24 @@ class AuthController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function postAuth( Request $request )
+    public function postAuth(Request $request)
     {
         $validator = Validator::make($request->all(), [
                 'email' => 'required',
                 'password' => 'required',
         ]);
 
-        if ( $validator->fails() ) {
+        if ($validator->fails()) {
             return response()->json($validator->messages(), 200);
         }
 
-        if ( \Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')]) ) {
+        $user = User::where('email', $request->input('email'))->first();
+
+        if ( $user->confirmed == 0 ) {
+            return response()->json(['error' => 'Вы не активировали аккаунт']);
+        }
+
+        if (\Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
             return response()->json(['success' => 'Успех']);
         } else {
             return response()->json(['error' => 'Неверно веденные данные.']);

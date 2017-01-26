@@ -14,8 +14,8 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if ( $request->user()->roles === 2 ) {
-            return redirect()->url('/admin');
+        if ( $request->user()->role !== 2 ) {
+            return redirect('/');
         }
 
         return $next($request);

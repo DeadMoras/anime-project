@@ -6,15 +6,19 @@ use App\UploadFiles\Vk\VkUpload;
 
 class UploadDelegator
 {
+    /**
+     * @return \Illuminate\Http\JsonResponse|mixed
+     *
+     * Метод на который клиент отправляет запрос при загрузке видео.
+     * Метод сохраняет файл, проверяет: видео или нет и вызывает метод для загрузки видео нужного класса
+     */
     public function getUpload()
     {
         $file = request()->file('video');
 
-        $path = request()->file('video')->store('videos');
-
         $mimeType = explode('/', $file->getMimeType())[1];
 
-        if ( 'mpeg' != $mimeType &&
+        if ('mpeg' != $mimeType &&
                 'mp4' != $mimeType &&
                 'ogg' != $mimeType &&
                 'quicktime' != $mimeType &&
@@ -25,8 +29,12 @@ class UploadDelegator
             return response()->json(['error' => 'it`s not a video']);
         }
 
+        // Временное сохранение видео, чтобы можно было передать его
+        $path = request()->file('video')->store('videos');
+
         $service = new UploadFiles(new VkUpload);
 
+        // информация о видео
         $data = [
                 'title' => (string) request()->input('title'),
                 'description' => (string) request()->input('description'),
@@ -34,6 +42,7 @@ class UploadDelegator
                 'group_id' => (int) request()->input('group_id'),
                 'album_id' => (int) request()->input('album_id'),
         ];
+
 
         return $service->upload((object) $file, (string) $path, (array) $data);
     }

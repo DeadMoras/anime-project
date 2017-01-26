@@ -5,7 +5,11 @@
         <li><a href="#">Ссылка</a></li>
         <li><a href="#">Ссылка</a></li>
         <li><a href="#">Ссылка</a></li>
-        <li><a href="#">Ссылка</a></li>
+        <li><form action="/logout"
+                  method="post">
+                {{ csrf_field() }}
+                <button class="header-button_logout">Выход</button>
+            </form></li>
     </ul>
 </div>
 <ul id="dropdown1" class="dropdown-content header-menu">

@@ -18,3 +18,9 @@ Route::post('/save_image', 'ImageController@saveImage');
 // Upload service
 Route::get('/upload-service/token', '\App\UploadFiles\TokenService@getToken');
 Route::post('/vk-save-video', '\App\UploadFiles\UploadDelegator@getUpload');
+
+// Logout
+Route::post('/logout', function() {
+    \Auth::logout();
+    return redirect('/');
+});

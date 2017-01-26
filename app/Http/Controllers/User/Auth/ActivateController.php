@@ -24,6 +24,10 @@ class ActivateController extends Controller
     {
         $user = User::where('code_confirm', $this->code)->firstOrFail();
 
+        if ( !$user ) {
+            return 'Not correct code';
+        }
+
         if ( $user->code_confirm === $this->code ) {
             $user->confirmed = 1;
             $user->code_confirm = null;

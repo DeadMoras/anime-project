@@ -4,7 +4,7 @@ function generateKey($length = 10, $charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefg
 {
     $str = '';
     $count = strlen($charset);
-    while ( $length-- ) {
+    while ($length--) {
         $str .= $charset[mt_rand(0, $count - 1)];
     }
 
@@ -119,15 +119,15 @@ function str2url($str)
 function checkStr($str)
 {
     $data = \App\Models\Seo::pluck('path', 'id')
-                           ->toArray();
+            ->toArray();
 
     $path = $str;
 
-    if ( $data ) {
-        if ( in_array($path, $data) ) {
-            for ( $i = 0; $i < 100; $i++ ) {
+    if ($data) {
+        if (in_array($path, $data)) {
+            for ($i = 0; $i < 100; $i++) {
                 $path = "{$str}-{$i}";
-                if ( !in_array($path, $data) ) {
+                if (!in_array($path, $data)) {
                     break;
                 }
             }
@@ -140,15 +140,15 @@ function checkStr($str)
 function checkStrImage($str)
 {
     $data = \App\Models\Image::pluck('name', 'id')
-                             ->toArray();
+            ->toArray();
 
     $path = $str;
 
-    if ( $data ) {
-        if ( in_array($path, $data) ) {
-            for ( $i = 0; $i < 100; $i++ ) {
+    if ($data) {
+        if (in_array($path, $data)) {
+            for ($i = 0; $i < 100; $i++) {
                 $path = "{$str}-{$i}";
-                if ( !in_array($path, $data) ) {
+                if (!in_array($path, $data)) {
                     break;
                 }
             }
@@ -161,4 +161,9 @@ function checkStrImage($str)
 function userInfo($method)
 {
     return (new \App\Http\Controllers\UserInfoController)->{$method}();
+}
+
+function deleteVideoFromStorage($path)
+{
+    \Illuminate\Support\Facades\Storage::delete($path);
 }

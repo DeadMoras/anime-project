@@ -31,11 +31,19 @@ let vm = new Vue({
             fd.append('group_id', this.file.group_id);
             fd.append('album_id', this.file.album_id);
 
-            this.$http.post('/vk-save-video', fd).then((response) => {
-                console.log(response);
-            });
-
             this.uploadedVideo = true;
+            this.$http.post('/vk-save-video', fd).then((response) => {
+                if (response.body.success) {
+                    console.log(response.body.success);
+                    Materialize.toast('Video was successfully upload');
+                    this.uploadedVideo = false;
+                    this.justWait = false;
+                    this.showIconsBool = false;
+                    this.showLinkBool = false;
+                } else {
+                    Materialize.toast('Error', 3000);
+                }
+            });
         }
     }
 });
