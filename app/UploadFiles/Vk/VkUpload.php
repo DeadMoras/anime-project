@@ -14,13 +14,10 @@ class VkUpload implements UploadInterface
      * @param array $data
      * @return mixed|void
      */
-    public function uploadVideo( $file, $path, $data )
+    public function uploadVideo($file, $path, $data)
     {
         // Получаем токен для отправки апи вконакте
-        $token = \DB::table('upload_service')
-                ->where('bundle', 'vk')
-                ->where('user_entity_id', \Auth::user()->id)
-                ->first();
+        $token = $this->serviceTableInfo();
 
         // Формируем url беря все веденные данные
         $url = "https://api.vk.com/method/video.save?name={$data['title']}";
@@ -60,7 +57,7 @@ class VkUpload implements UploadInterface
      *
      * Метод для загрузки видео
      */
-    private function uploadVideoSecond( $url, $path, $token )
+    private function uploadVideoSecond($url, $path, $token)
     {
         // Новый объект guzzle
         $client = new Client();
@@ -81,6 +78,19 @@ class VkUpload implements UploadInterface
         // Метод, который записывает данные о запросе в базу данных.
         (new ActivitySerivce)->newActivity($token->user_entity_id, $token->vk_user_id, $token->id);
 
-        return response()->json(['success' => $response->getBody()->getContents()]);
+        $data = [
+                'response' => $response->getBody()->getContents(),
+                'vk_user_id' => $token->vk_user_id
+        ];
+
+        return response()->json(['success' => $data]);
+    }
+
+    private function serviceTableInfo()
+    {
+        return \DB::table('upload_service')
+                ->where('bundle', 'vk')
+                ->where('user_entity_id', \Auth::user()->id)
+                ->first();
     }
 }

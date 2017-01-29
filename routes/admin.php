@@ -18,4 +18,6 @@ Route::group(['namespace' => 'Admin'], function () {
     // Anime
     Route::resource('/anime', 'AnimeController');
     Route::post('anime/update', 'AnimeController@indexUpdate');
+    // Same anime
+    Route::post('/search/same_anime', 'AnimeController@sameAnimeSearch');
 });

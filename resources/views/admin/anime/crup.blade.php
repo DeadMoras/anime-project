@@ -31,8 +31,8 @@
             <div class="row">
                 <div class="col s12">
                     <ul class="tabs">
-                        <li class="tab col s3"><a href="#anime">Anime</a></li>
-                        <li class="tab col s3"><a class="active" href="#series">Series</a></li>
+                        <li class="tab col s3"><a class="active" href="#anime">Anime</a></li>
+                        <li class="tab col s3"><a href="#series">Series</a></li>
                         <li class="tab col s3"><a href="#seo">Seo</a></li>
                         <li class="tab col s3"><a href="#image">Image</a></li>
                     </ul>
@@ -79,6 +79,35 @@
                             <label>age</label>
                         </div>
                     </div>
+                    <div class="row search-same">
+                        <div class="input-field col s12">
+                            <input type="text"
+                                   v-model="searchSameInput"
+                                   id="searchSameInput"
+                                   class="col s7">
+                            <label for="searchSameInput">Write name of anime</label>
+                            <a class="waves-effect waves-light btn col s2"
+                               @click="searchSameAnime()">Search</a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div v-if="sameAnimeStatus">
+                            <ul class="row col s12 m12 l12 same-anime_result">
+                                <li v-for="item in sameAnimeResponse"
+                                    class="col s6">
+                                    <div class="input-field col s10">
+                                        @{{ item.name }}
+                                        <input type="radio"
+                                               :id="'radioSameAnime-'+ item.id"
+                                               name="sameAnime"
+                                               :value="item.id"
+                                               class="col s2">
+                                        <label :for="'radioSameAnime-'+ item.id"></label>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
                 <div id="series" class="col s12">
                     <div class="row col s12 m12 l12 choose-buttons_upload">
@@ -92,9 +121,9 @@
                              class="col s6">
                             <div class="input-field col s11">
                                 <input type="text"
-                                       name="anime-each_link"
-                                       id="anime-each_link">
-                                <label for="anime-each_link">Write link</label>
+                                       name="anime-new_link"
+                                       id="anime-new_link">
+                                <label for="anime-new_link">Write link</label>
                             </div>
                         </div>
                         <div v-if="showIconsBool"
@@ -139,11 +168,54 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row col s12 m12 l12 all-videos_container">
+                        <div class="row">
+                            <div v-if="showInputLinkVideo"
+                                 class="input-field col s6">
+                                <input type="text"
+                                       id="uploaded-video"
+                                       name="uploaded-video"
+                                       :value="newVideoLink">
+                            </div>
+                            <input type="hidden"
+                                   name="image_mimeType"
+                                   :value="imageResponse.imageType">
+                            <input type="hidden"
+                                   name="image_id"
+                                   :value="imageResponse.imageId">
+                            <input type="hidden"
+                                   name="image_name"
+                                   :value="imageResponse.imageName">
+                        </div>
+                    </div>
                 </div>
                 <div id="seo" class="col s12">
                     @include('seo.main', ['data' => $anime])
                 </div>
-                <div id="image" class="col s12">Test 3</div>
+                <div id="image" class="col s12">
+                    <div class="file-field input-field col s12"
+                         id="register-image">
+                        <div class="btn"
+                             v-if="!image">
+                            <span>Обложка</span>
+                            <input type="file"
+                            @change="uploadImage">
+                        </div>
+                        <div class="file-path-wrapper"
+                             v-if="!image">
+                            <input class="file-path"
+                                   type="text">
+                        </div>
+                        <div class="imageUploaded"
+                             v-else>
+                            <img :src="image">
+                            <div class="panel-image">
+                                <a class="waves-effect waves-light btn col s12"
+                                @click="removeImage">Удалить</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="form-buttons">
@@ -159,11 +231,11 @@
 
                 <button class="waves-effect waves-light btn"
                         name="update"
-                        value="1">Update
+                        value="1">Create
                 </button>
                 <button class="waves-effect waves-light btn"
                         name="update_close"
-                        value="1">Update and close
+                        value="1">Create and close
                 </button>
                 <button class="waves-effect waves-light btn"
                         name="close"

@@ -273,3 +273,38 @@ body {
 .choose-buttons_upload a:nth-child(2) {
     float: right;
 }
+
+.all-videos_container {
+    height: auto;
+    border-top: solid 2px rgba(0,0,0,.1);
+}
+
+.imageUploaded .panel-image {
+    display: none;
+}
+
+.imageUploaded:hover .panel-image {
+    max-width: 70%;
+    margin-left: 0.6%;
+    display: block;
+}
+
+.imageUploaded img {
+    margin: 5px 10px;
+    max-width: 70%;
+}
+
+.search-same a {
+    margin-top: 9px;
+    margin-left: 25px !important;
+    background: none;
+    color: #565656;
+    border-bottom: solid 2px #7e8baa;
+    box-shadow: none;
+}
+
+.search-same a:hover {
+    background: #7e8baa;
+    box-shadow: none;
+    color: #fff;
+}

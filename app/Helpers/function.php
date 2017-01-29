@@ -86,7 +86,7 @@ function rus2translit($string)
     return strtr($string, $converter);
 }
 
-function str2urlImage($str)
+function strOther($str, $type)
 {
     $str = rus2translit($str);
 
@@ -96,22 +96,13 @@ function str2urlImage($str)
 
     $str = trim($str, "-");
 
-    $newStr = checkStrImage($str);
-
-    return $newStr;
-}
-
-function str2url($str)
-{
-    $str = rus2translit($str);
-
-    $str = strtolower($str);
-
-    $str = preg_replace('~[^-a-z0-9_]+~u', '-', $str);
-
-    $str = trim($str, "-");
-
-    $newStr = checkStr($str);
+    if ( $type == 'image' ) {
+        $newStr = checkStrImage($str);
+    } elseif ( $type == 'seo' ) {
+        $newStr = checkStr($str);
+    } else {
+        $newStr = $str;
+    }
 
     return $newStr;
 }

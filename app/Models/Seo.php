@@ -22,15 +22,15 @@ class Seo extends Model
 
         $seo->bundle = $data['bundle'];
         $seo->seo_description = $data['seo_description'];
-        $seo->seo_keywords = $data['seo_keywors'];
+        $seo->seo_keywords = $data['seo_keywords'];
         $seo->entity_id = (int) $data['entity_id'];
 
-        $dataNew = $this->seoTranslate($data['tin-title'], $data['seo-title']);
+        $dataNew = $this->seoTranslate($data['tin_title'], $data['seo_title']);
 
         // Если указан путь - записываем его
         // Иначе - записываем новый сформированный специальной функцией путь.
-        if ( $data['seo-path'] ) {
-            $seo->path = $data['seo-path'];
+        if ( $data['seo_path'] ) {
+            $seo->path = $data['seo_path'];
         } else {
             $seo->path = $dataNew['path'];
         }
@@ -43,19 +43,19 @@ class Seo extends Model
     }
 
     /**
-     * @param string $tin_title
-     * @param string $seo_title
+     * @param string $tinTitle
+     * @param string $seoTitle
      * @return array
      */
-    private function seoTranslate(string $tin_title, string $seo_title): array
+    private function seoTranslate(string $tinTitle, string $seoTitle): array
     {
         $data = [];
-        if ( iconv_strlen($seo_title) < 1 ) {
-            $data['path'] = str2url($tin_title);
-            $data['title'] = $tin_title;
+        if ( iconv_strlen($seoTitle) < 1 ) {
+            $data['path'] = strOther($tinTitle, 'seo');
+            $data['title'] = $tinTitle;
         } else {
-            $data['title'] = $seo_title;
-            $data['path'] = str2url($seo_title);
+            $data['title'] = $seoTitle;
+            $data['path'] = strOther($seoTitle, 'seo');
         }
 
         return $data;

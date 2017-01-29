@@ -45,7 +45,7 @@ class Image extends Model
                 $imageName = $this->userAvatarName($userNameAvatar);
             } else {
                 // str2urlImage = метод, который подготавливает название для записи в базу данных
-                $imageName = str2urlImage($image->getClientOriginalName());
+                $imageName = strOther($image->getClientOriginalName(), 'image');
 
                 // Название картинки для базы данных
                 $imagePath = $imageName . time() . '.' . $imageMimiType[1];
@@ -168,19 +168,19 @@ class Image extends Model
     /**
      * @param string $name
      * @param int $imageId
-     * @param bool $user
-     * @param int $userEntity
+     * @param bool $entityBool
+     * @param int $entityId
      *
      * Метод для изменения название картинки.
      * Если $user = true, то в entity_id попадет еще и айди пользователя. Связанно это с тем, что для загрузки аватарки
      * используется другая логика, чем для других картинок.
      */
-    public function renameAvatar( string $name, int $imageId, bool $user = false, int $userEntity = 0 ): void
+    public function renameAvatar( string $name, int $imageId, bool $entityBool = false, int $entityId = 0 ): void
     {
         $image = Image::findOrFail($imageId);
 
-        if ( $user == true ) {
-            $image->entity_id = $userEntity;
+        if ( $entityBool == true ) {
+            $image->entity_id = $entityId;
         }
 
         $image->name = $name;
