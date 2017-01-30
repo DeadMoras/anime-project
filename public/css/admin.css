@@ -308,3 +308,11 @@ body {
     box-shadow: none;
     color: #fff;
 }
+
+.edit-anime_image img {
+    max-height: 400px;
+}
+
+.series .input-field {
+    margin-right: 35px;
+}

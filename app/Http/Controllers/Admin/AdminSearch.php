@@ -53,6 +53,24 @@ class AdminSearch extends Controller
     /**
      *
      */
+    private function anime()
+    {
+        $data = DB::table('anime')
+                ->select('anime.id', 'anime.name', 'anime.status', 'anime.visits', 'images.name as image_name')
+                ->leftJoin('images', 'images.entity_id', '=', 'anime.id')
+                ->where('anime.id', 'LIKE', '%' . $this->text . '%')
+                ->orWhere('anime.name', 'LIKE', '%' . $this->text . '%')
+                ->orWhere('anime.status', 'LIKE', '%' . $this->text . '%')
+                ->get();
+
+        $this->data = $data;
+
+        return $this->responseFromSearch();
+    }
+
+    /**
+     *
+     */
     private function users()
     {
         $data = DB::table('users')

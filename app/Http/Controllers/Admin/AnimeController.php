@@ -8,6 +8,7 @@ use App\Models\Image;
 use App\Models\Seo;
 use App\UploadFiles\UploadFiles;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AnimeController extends Controller
 {
@@ -18,6 +19,11 @@ class AnimeController extends Controller
      */
     public function index()
     {
+        $anime = DB::table('anime')
+                ->select('anime.id', 'anime.name', 'anime.status', 'anime.visits', 'images.name as image_name')
+                ->leftJoin('images', 'images.entity_id', '=', 'anime.id')
+                ->paginate(15);
+
         return view('admin.anime.index', compact('anime'));
     }
 
@@ -117,7 +123,30 @@ class AnimeController extends Controller
      */
     public function edit($id)
     {
-        //
+        $anime = DB::table('anime')
+                ->select('anime.*', 'images.name as image_name', 'seo.*')
+                ->leftJoin('images', 'images.entity_id', '=', 'anime.id')
+                ->leftJoin('seo', 'seo.entity_id', '=', 'anime.id')
+                ->where('anime.id', $id)
+                ->first();
+
+        $sameAnime = null;
+
+        if (null !== $anime->same_entity_id) {
+            $sameAnime = DB::table('anime')
+                    ->select('anime.name', 'anime.id')
+                    ->where('anime.id', $anime->same_entity_id)
+                    ->first();
+        }
+
+        $animeSeries = DB::table('anime_series')
+                ->select('id', 'link')
+                ->where('anime_series.entity_id', $id)
+                ->get();
+
+        $is_new = false;
+
+        return view('admin.anime.crup', compact('is_new', 'anime', 'sameAnime', 'animeSeries'));
     }
 
     /**
@@ -129,7 +158,7 @@ class AnimeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        dd($request->all());
     }
 
     /**

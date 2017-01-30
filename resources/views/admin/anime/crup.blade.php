@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <form action="{{ $is_new ? action('Admin\AnimeController@store') : action('Admin\AnimeController@update', ['id' => $anime->product_id]) }}"
+    <form action="{{ $is_new ? action('Admin\AnimeController@store') : action('Admin\AnimeController@update', ['id' => $anime->id]) }}"
           method="post">
 
         <div id="animeCrup">
@@ -79,6 +79,20 @@
                             <label>age</label>
                         </div>
                     </div>
+                    @if ( $sameAnime )
+                        <div class="input-field col s12">
+                            <input type="text"
+                                   value="{{ $sameAnime->name }}"
+                                   disabled
+                                   class="col s9">
+                            <input type="checkbox"
+                                   class="col s3"
+                                   id="delete-same-anime"
+                                   name="delete-same-anime"
+                                   value="{{ $sameAnime->id }}">
+                            <label for="delete-same-anime">Delete</label>
+                        </div>
+                    @else
                     <div class="row search-same">
                         <div class="input-field col s12">
                             <input type="text"
@@ -108,6 +122,7 @@
                             </ul>
                         </div>
                     </div>
+                    @endif
                 </div>
                 <div id="series" class="col s12">
                     <div class="row col s12 m12 l12 choose-buttons_upload">
@@ -169,6 +184,28 @@
                         </div>
                     </div>
                     <div class="row col s12 m12 l12 all-videos_container">
+                        @if ( count($animeSeries) )
+                            <div class="row series">
+                                @foreach($animeSeries as $series)
+                                    <div class="input-field col s5">
+                                        <input type="text"
+                                               class="col s10"
+                                               value="{{ $series->link }}"
+                                               disabled>
+                                        <div class="col s2">
+                                            <input type="hidden"
+                                                   name="delete-series[{{ $series->id }}]"
+                                                   value="0">
+                                            <input type="checkbox"
+                                                   id="delete-series-{{$series->id}}"
+                                                   name="delete-series[{{ $series->id }}]"
+                                                   value="1">
+                                            <label for="delete-series-{{$series->id}}">Delete</label>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
                         <div class="row">
                             <div v-if="showInputLinkVideo"
                                  class="input-field col s6">
@@ -193,6 +230,19 @@
                     @include('seo.main', ['data' => $anime])
                 </div>
                 <div id="image" class="col s12">
+                    <div class="input-field col s12 edit-anime_image">
+                        @if ( $is_new == false )
+                            <img src="{{ asset('images/anime/'.$anime->image_name) }}" alt="">
+                            <input type="hidden"
+                                   name="delete-uploaded_image"
+                                   value="0">
+                            <input type="checkbox"
+                                   name="delete-uploaded_image"
+                                   id="delete-uploaded_image"
+                                   value="1">
+                            <label for="delete-uploaded_image">Delete</label>
+                        @endif
+                    </div>
                     <div class="file-field input-field col s12"
                          id="register-image">
                         <div class="btn"

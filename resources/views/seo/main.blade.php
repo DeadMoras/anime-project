@@ -26,7 +26,7 @@
         <input type="text"
                name="seo_path"
                id="seo_path"
-               value="{{ old('seo_path', isset($item->seo_path) ? $item->seo_path: '') }}">
+               value="{{ old('seo_path', isset($data->path) ? $data->path: '') }}">
         <label for=" seo_path">Seo path</label>
     </div>
 </div>
