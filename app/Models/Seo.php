@@ -12,13 +12,21 @@ class Seo extends Model
 
     /**
      * @param array $data
+     * @param bool $new
+     * @param int $id
      * @return Mseo
      *
      * Метод для создания новой записи в базе данных
      */
-    public function newSeo(array $data)
+    public function newSeo(array $data, bool $new = true, int $id = 0)
     {
-        $seo = new Seo;
+        $seo = null;
+
+        if ( true == $new ) {
+            $seo = new Seo;
+        } elseif ( false == $new ) {
+            $seo = Seo::findOrFail($id);
+        }
 
         $seo->bundle = $data['bundle'];
         $seo->seo_description = $data['seo_description'];

@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 class AnimeSeriesController extends Controller
 {
+    /**
+     * @param string $link
+     * @param int $animeId
+     */
     public function newSeries(string $link, int $animeId)
     {
         $anime = new AnimeSeries;

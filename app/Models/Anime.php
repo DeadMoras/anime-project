@@ -7,4 +7,30 @@ use Illuminate\Database\Eloquent\Model;
 class Anime extends Model
 {
     protected $table = 'anime';
+
+    /**
+     * @param int $id
+     * @param bool $new
+     * @return $this
+     */
+    public function newAnime(int $id = 0, bool $new = true)
+    {
+        $anime = null;
+
+        if ( true == $new ) {
+            $anime = new Anime;
+        } elseif ( false == $new ) {
+            $anime = Anime::findOrFail($id);
+        }
+
+        $anime->name = request()->input('anime_name');
+        $anime->status = request()->input('anime_status');
+        $anime->year = request()->input('anime_year');
+        $anime->age = request()->input('anime_age');
+        $anime->same_entity_id = request()->input('sameAnime') ? request()->input('sameAnime') : null;
+
+        $anime->save();
+
+        return $anime;
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Anime;
+use App\Models\AnimeSeries;
 use App\Models\Image;
 use App\Models\Seo;
 use App\UploadFiles\UploadFiles;
@@ -57,13 +58,7 @@ class AnimeController extends Controller
 //                'image_id' => 'required'
 //        ]);
 
-        $anime = new Anime;
-        $anime->name = $request->input('anime_name');
-        $anime->status = $request->input('anime_status');
-        $anime->year = $request->input('anime_year');
-        $anime->age = $request->input('anime_age');
-        $anime->same_entity_id = $request->input('sameAnime') ? $request->input('sameAnime') : null;
-        $anime->save();
+        $anime = (new Anime)->newAnime();
 
         $newVideo = null;
 
@@ -95,7 +90,7 @@ class AnimeController extends Controller
                 'tin_title' => $anime->name
         ];
 
-        (new Seo)->newSeo($seoData);
+        (new Seo)->newSeo($seoData, true);
 
         if ($request->input('update') == '1') {
             return redirect('admin/anime/' . $anime->id . '/edit');
@@ -124,7 +119,8 @@ class AnimeController extends Controller
     public function edit($id)
     {
         $anime = DB::table('anime')
-                ->select('anime.*', 'images.name as image_name', 'seo.*')
+                ->select('anime.*', 'images.name as image_name', 'images.id as image_id',
+                        'seo.seo_title', 'seo.id as seo_id', 'seo.seo_description', 'seo.seo_keywords', 'seo.path')
                 ->leftJoin('images', 'images.entity_id', '=', 'anime.id')
                 ->leftJoin('seo', 'seo.entity_id', '=', 'anime.id')
                 ->where('anime.id', $id)
@@ -149,7 +145,7 @@ class AnimeController extends Controller
         return view('admin.anime.crup', compact('is_new', 'anime', 'sameAnime', 'animeSeries'));
     }
 
-    /**
+    /**+
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request $request
@@ -158,7 +154,57 @@ class AnimeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd($request->all());
+        // Anime update
+        $anime = (new Anime)->newAnime($id, false);
+
+        $newVideo = null;
+
+        if ($request->input('uploaded-video')) {
+            $newVideo = $request->input('uploaded-video');
+        } elseif ($request->input('anime-new_link')) {
+            $newVideo = $request->input('anime-new_link');
+        }
+
+        // Anime series
+        if ( null != $newVideo ) {
+            (new AnimeSeriesController)->newSeries($newVideo, $anime->id);
+        }
+
+        // Delete series
+        (new AnimeSeries)->deleteSeries($request->input('delete-series'));
+
+        // Delete uploaded image
+        if ($request->input('delete-uploaded_image')) {
+            $image = new Image;
+
+            $image->deleteImage($request->input('delete-uploaded_image'));
+
+            $newNameImage = strOther($request->input('anime_name'), '') . '.' . explode('/', $request->input('image_mimeType'))[1];
+
+            // Метод для изменения имени загруженной аватарки в базе данных
+            $image->renameAvatar($newNameImage, $request->input('image_id'), true, $anime->id);
+
+            // Метод для изменения имени загружнной аватрки в папке
+            $image->renameAvatarDir($request->input('image_name'), $newNameImage, 'anime');
+        }
+
+        $seoData = [
+                'bundle' => 'anime',
+                'seo_description' => $request->input('seo_description'),
+                'seo_title' => $request->input('seo_title'),
+                'seo_keywords' => $request->input('seo_keywords'),
+                'seo_path' => $request->input('seo_path'),
+                'entity_id' => $anime->id,
+                'tin_title' => $anime->name
+        ];
+
+        (new Seo)->newSeo($seoData, false, $request->input('seo_id'));
+
+        if ($request->input('update') == '1') {
+            return redirect('admin/anime/' . $anime->id . '/edit');
+        } elseif ($request->input('update_close') == '1') {
+            return redirect('admin/anime');
+        }
     }
 
     /**

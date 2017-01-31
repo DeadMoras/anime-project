@@ -239,7 +239,7 @@
                             <input type="checkbox"
                                    name="delete-uploaded_image"
                                    id="delete-uploaded_image"
-                                   value="1">
+                                   value="{{ $anime->image_id }}">
                             <label for="delete-uploaded_image">Delete</label>
                         @endif
                     </div>
@@ -267,6 +267,12 @@
                     </div>
                 </div>
             </div>
+
+            @if ( $is_new == false )
+                <input type="hidden"
+                       name="seo_id"
+                       value="{{ $anime->seo_id }}">
+            @endif
 
             <div class="form-buttons">
                 <input type="hidden"
@@ -297,7 +303,7 @@
 
 @endsection
 
-@section('other_footer_links')
+@section('other_footer_links')s
 
     <script src="{{ asset('js/admin/admin-materializeMain.js') }}"></script>
     <script src="{{ asset('js/admin/admin-animeCrup.js') }}"></script>
