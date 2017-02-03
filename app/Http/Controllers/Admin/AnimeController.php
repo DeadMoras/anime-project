@@ -166,8 +166,8 @@ class AnimeController extends Controller
         }
 
         // Anime series
-        if ( null != $newVideo ) {
-            (new AnimeSeriesController)->newSeries($newVideo, $anime->id);
+        if (null != $newVideo) {
+            (new AnimeSeriesController)->newSeries($newVideo, $id);
         }
 
         // Delete series
@@ -175,16 +175,20 @@ class AnimeController extends Controller
 
         // Delete uploaded image
         if ($request->input('delete-uploaded_image')) {
+            $imageName = Image::select('name')
+                    ->where('entity_id', $id)
+                    ->first();
+
             $image = new Image;
 
-            $image->deleteImage($request->input('delete-uploaded_image'));
+            $image->deleteImage($request->input('delete-uploaded_image'), $imageName->name, 'anime');
 
             $newNameImage = strOther($request->input('anime_name'), '') . '.' . explode('/', $request->input('image_mimeType'))[1];
 
-            // Метод для изменения имени загруженной аватарки в базе данных
+//             Метод для изменения имени загруженной аватарки в базе данных
             $image->renameAvatar($newNameImage, $request->input('image_id'), true, $anime->id);
 
-            // Метод для изменения имени загружнной аватрки в папке
+//             Метод для изменения имени загружнной аватрки в папке
             $image->renameAvatarDir($request->input('image_name'), $newNameImage, 'anime');
         }
 
@@ -194,14 +198,14 @@ class AnimeController extends Controller
                 'seo_title' => $request->input('seo_title'),
                 'seo_keywords' => $request->input('seo_keywords'),
                 'seo_path' => $request->input('seo_path'),
-                'entity_id' => $anime->id,
+                'entity_id' => $id,
                 'tin_title' => $anime->name
         ];
 
         (new Seo)->newSeo($seoData, false, $request->input('seo_id'));
 
         if ($request->input('update') == '1') {
-            return redirect('admin/anime/' . $anime->id . '/edit');
+            return redirect('admin/anime/' . $id . '/edit');
         } elseif ($request->input('update_close') == '1') {
             return redirect('admin/anime');
         }

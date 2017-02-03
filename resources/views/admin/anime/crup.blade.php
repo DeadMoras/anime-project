@@ -60,10 +60,9 @@
                     <div class="row">
                         <div class="input-field col s6">
                             <select name="anime_year">
-                                <option value="" {{ empty($anime->year) ? '' : 'select' }}>не выбрана</option>
                                 @foreach (config('anime.years') as $key => $value)
                                     <option value="{{ $value }}"
-                                            {{ !empty($anime->year) == $value ? 'selected' : '' }}>{{ $value }}</option>
+                                            {{ !isset($anime->year) == $value ? 'selected' : '' }}>{{ $value }}</option>
                                 @endforeach
                             </select>
                             <label>year</label>
@@ -79,7 +78,7 @@
                             <label>age</label>
                         </div>
                     </div>
-                    @if ( $sameAnime )
+                    @if ( !empty($sameAnime) )
                         <div class="input-field col s12">
                             <input type="text"
                                    value="{{ $sameAnime->name }}"
@@ -184,7 +183,7 @@
                         </div>
                     </div>
                     <div class="row col s12 m12 l12 all-videos_container">
-                        @if ( count($animeSeries) )
+                        @if ( !empty($animeSeries) )
                             <div class="row series">
                                 @foreach($animeSeries as $series)
                                     <div class="input-field col s5">

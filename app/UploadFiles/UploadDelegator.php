@@ -46,4 +46,20 @@ class UploadDelegator
 
         return $service->upload((object) $file, (string) $path, (array) $data);
     }
+
+    /**
+     * @param string $type
+     *
+     * Главный метод для загрузки фотографий.
+     * В $type указывается: на стену, в личные сообщения или же загрузка в альбом
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function uploadImage($type = '')
+    {
+        $files = request()->all();
+
+        if ( !$files ) {
+            return response()->json(['error' => 'Nothing']);
+        }
+    }
 }

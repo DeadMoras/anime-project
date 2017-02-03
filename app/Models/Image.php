@@ -136,11 +136,12 @@ class Image extends Model
      * @param string $name
      *
      * Метод для удаления записи из базы данных
+     * @param string $dir
      */
-    public function deleteImage( int $id, string $name )
+    public function deleteImage( int $id, string $name, string $dir )
     {
         Image::where('id', $id)->delete();
-        $this->deleteImageFromDir($name);
+        $this->deleteImageFromDir($name, $dir);
     }
 
     /**
