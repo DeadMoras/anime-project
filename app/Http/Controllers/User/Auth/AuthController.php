@@ -56,12 +56,15 @@ class AuthController extends Controller
         $userNameForAvatar = (new UserInfo)->newInfo($user->id);
 
         if (request()->input('imageUploaded') == true) {
-            $userNameForAvatarMime = $userNameForAvatar . '.' . explode('/', request()->input('user.imageType'))[1];
-            // Метод для изменения имени загруженной аватарки в базе данных
-            (new Image)->renameAvatar($userNameForAvatarMime, $request->input('user.imageId'), true, $user->id);
+            foreach ( request()->input('imageResponse') as $key => $value ) {
+                $userNameForAvatarMime = $userNameForAvatar . '.' . explode('/', $value['imageType'])[1];
+                // Метод для изменения имени загруженной аватарки в базе данных
+                (new Image)->renameAvatar($userNameForAvatarMime, $value['imageId'], true, $user->id);
 
-            // Метод для изменения имени загружнной аватрки в папке
-            (new Image)->renameAvatarDir($request->input('user.imageName'), $userNameForAvatarMime, 'user');
+                // Метод для изменения имени загружнной аватрки в папке
+                // Юзаю explode, ибо я дурачек, который передает images/user, а в этом методе это дописывается...
+                (new Image)->renameAvatarDir(explode('/', $value['imageName'])[3], $userNameForAvatarMime, 'user');
+            }
         } else {
             $userDefaultImage = (new Image)->createNewDefaultImage('users');
 

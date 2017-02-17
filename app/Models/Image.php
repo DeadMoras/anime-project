@@ -27,47 +27,53 @@ class Image extends Model
                 'error' => true,
         ];
 
+        // хайден поля, можно свободно изменять высоту, ширину и папку, куда будет сохраняться картинка
+        $path = request()->input('path_to_save_image');
+        $width = request()->input('image_width');
+        $height = request()->input('image_height');
+
         // Проверка на существование файла. Название картинки всего должно быть 'image'
         if ( request()->hasFile('image') ) {
-            $image = request()->file('image');
+            foreach(request()->file('image') as $key => $value) {
+                $image = $value;
 
-            // хайден поля, можно свободно изменять высоту, ширину и папку, куда будет сохраняться картинка
-            $path = request()->input('path_to_save_image');
-            $width = request()->input('image_width');
-            $height = request()->input('image_height');
+                // Формат картинки
+                $imageMimiType = explode('/', $image->getMimeType());
 
-            // Формат картинки
-            $imageMimiType = explode('/', $image->getMimeType());
+                // Название картинки, если аватарка для пользователя - вызываем другой метод
+                $imageName = (string) '';
+                if ( true === $userAvatar ) {
+                    $imageName = $this->userAvatarName($userNameAvatar);
+                } else {
+                    // str2urlImage = метод, который подготавливает название для записи в базу данных
+                    $imageName = strOther($image->getClientOriginalName(), 'image');
 
-            // Название картинки, если аватарка для пользователя - вызываем другой метод
-            $imageName = (string) '';
-            if ( true === $userAvatar ) {
-                $imageName = $this->userAvatarName($userNameAvatar);
-            } else {
-                // str2urlImage = метод, который подготавливает название для записи в базу данных
-                $imageName = strOther($image->getClientOriginalName(), 'image');
+                    // Название картинки для базы данных
+                    $imagePath = $imageName . time() . '.' . $imageMimiType[1];
 
-                // Название картинки для базы данных
-                $imagePath = $imageName . time() . '.' . $imageMimiType[1];
+                    // Сохраняем файл в директорию
+                    LImage::make($image->getRealPath())
+                            ->resize($width, $height)
+                            ->save(public_path('images/' . $path . '/' . $imagePath));
 
-                // Сохраняем файл в директорию
-                LImage::make($image->getRealPath())
-                        ->resize($width, $height)
-                        ->save(public_path('images/' . $path . '/' . $imagePath));
+                    // Информация для базы данных
+                    $dbData = [
+                            'name' => $imagePath,
+                            'bundle' => request()->input('image_bundle'),
+                            'size' => $image->getSize(),
+                            'mimiType' => $image->getMimeType(),
+                    ];
 
-                // Информация для базы данных
-                $dbData = [
-                        'name' => $imagePath,
-                        'bundle' => request()->input('image_bundle'),
-                        'size' => $image->getSize(),
-                        'mimiType' => $image->getMimeType(),
-                ];
+                    // Сохраняем запись о картинке в базу данных
+                    $data['image'][] = $this->saveImageDataBase((array) $dbData);
+                }
 
-                // Сохраняем запись о картинке в базу данных
-                $data['image'] = $this->saveImageDataBase((array) $dbData);
+                $data['error'] = false;
             }
+        }
 
-            $data['error'] = false;
+        foreach ( $data['image'] as $k => $v ) {
+            $v['name'] = '/images/' . $path . '/' . $v['name'];
         }
 
         return $data;

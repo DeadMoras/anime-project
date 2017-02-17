@@ -17,13 +17,13 @@
         );
 
         // $(document).scroll(function() {
-        // 	var $scroll = $(this).scrollTop();
-        // 	var $topDist = $('body').position();
-        // 	if ( $scroll> $topDist.top ) {
-        // 		$('header').addClass('fixed-header');
-        // 	} else {
-        // 		$('header').removeClass('fixed-header');
-        // 	}
+        //  var $scroll = $(this).scrollTop();
+        //  var $topDist = $('body').position();
+        //  if ( $scroll> $topDist.top ) {
+        //      $('header').addClass('fixed-header');
+        //  } else {
+        //      $('header').removeClass('fixed-header');
+        //  }
         // });
 
     });

@@ -7,20 +7,21 @@
     @include('_patterns._header_link')
 </head>
 <body>
-<header class="col s12 m12 l12">
-    @include('_patterns._header')
-</header>
+    <header class="col s12 m12 l12">
+        @include('_patterns._header')
+    </header>
 
-<meta id="token" name="token" value="{{csrf_token()}}">
+    <meta id="token" name="token" value="{{csrf_token()}}">
 
-@yield('content')
+    <div id="app">
+        @yield('content')
+    </div>
 
-
-@if ( Request::url() !== 'http://anime-music.ru/register' )
-    <footer class="page-footer">
-        @include('_patterns._footer')
-    </footer>
-@endif
+    @if ( Request::url() !== 'http://anime-music.ru/register' )
+        <footer class="page-footer">
+            @include('_patterns._footer')
+        </footer>
+    @endif
 
 @include('_patterns._footer_links')
 @yield('other_footer_links')

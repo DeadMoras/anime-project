@@ -327,9 +327,3 @@
     @include('user.auth.auth')
 
 @endsection
-
-@section('other_footer_links')
-    <script src="{{ asset('js/index-vue.js') }}"></script>
-    <script src="{{ asset('js/auth-vue.js') }}"></script>
-    <script src="{{ asset('js/materialize-main.js') }}"></script>
-@endsection
