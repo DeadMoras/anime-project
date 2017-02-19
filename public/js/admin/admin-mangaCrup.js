@@ -8,6 +8,15 @@ let vm = new Vue({
         showLinkBool: false,
         showIconsBool: false,
         justWait: false,
+        vkUploadImageMethod: '',
+        vkUploadImageShowForm: false,
+        vkAlbum: {
+            albumId: null,
+            groupId: null
+        },
+        vkWall: {
+            groupId: null,
+        }
     },
     methods: {
         uploadImage(e) {
@@ -49,12 +58,23 @@ let vm = new Vue({
             this.image = '';
             this.imageUploaded = false;
         },
+        uploadVkImages(method) {
+            this.vkUploadImageMethod = method;
+            this.vkUploadImageShowForm = true;
+        },
         vkImages(e) {
             let files = e.target.files;
             let fd = new FormData;
+            fd.append('method', this.vkUploadImageMethod);
+            if ( this.vkUploadImageMethod == 'albumUpload' ) {
+                fd.append('vkId[albumId]', this.vkAlbum.albumId);
+                fd.append('vkId[groupId]', this.vkAlbum.groupId);
+            } else if ( this.vkUploadImageMethod == 'wallUpload' ) {
+                fd.append('vkId[groupId]', this.vkWall.groupId);
+            }
 
             for ( let k of files ) {
-                fd.append(k.name, k);
+                fd.append('images[]', k);
             }
 
             this.$http.post('/vk-save-image', fd).then((response) => {

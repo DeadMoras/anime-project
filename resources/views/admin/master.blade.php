@@ -7,7 +7,7 @@
     @include('admin._patterns._header_link')
 </head>
 <body>
-<meta id="token" name="token" value="{{csrf_token()}}">
+<meta id="token" name="token" value="{{csrf_token()}}" content="{{csrf_token()}}">
 
 <div class="row">
 

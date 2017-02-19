@@ -95,7 +95,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        @include('admin.gentetics')
+                        @include('admin.gentetics', ['genreBundle' => 'manga'])
                     </div>
                 </div>
                 <div id="toms" class="col s12">
@@ -117,15 +117,57 @@
                         </div>
                         <div v-if="showIconsBool"
                              class="col s6">
-                            <div class="file-field input-field col s12">
-                                <div class="btn">
-                                    <span>Images</span>
-                                    <input type="file"
-                                           multiple
-                                           @change="vkImages">
+                            <div class="input-field col s4 choose-method_upload--image">
+                                <span title="In album"
+                                @click="uploadVkImages('albumUpload')">A</span>
+                                <span title="On wall"
+                                @click="uploadVkImages('wallUpload')">W</span>
+                                <span title="In messages"
+                                @click="uploadVkImages('messagesUpload')">M</span>
+                            </div>
+                            <div v-if="vkUploadImageShowForm == true"
+                                 class="col s12">
+                                <div class="file-field input-field col s12">
+                                    <div class="btn">
+                                        <span>Images</span>
+                                        <input type="file"
+                                               multiple
+                                               @change="vkImages">
+                                    </div>
+                                    <div class="file-path-wrapper">
+                                        <input class="file-path validate" type="text">
+                                    </div>
                                 </div>
-                                <div class="file-path-wrapper">
-                                    <input class="file-path validate" type="text">
+                                <div v-if="vkUploadImageMethod == 'albumUpload'">
+                                    <div class="col s12 albumUploadInputs">
+                                        <div class="input-field col s5">
+                                            <input type="text"
+                                                   class="col s12"
+                                                   name="albumId"
+                                                   id="albumId"
+                                                   v-model="vkAlbum.albumId">
+                                            <label for="albumId">Album id</label>
+                                        </div>
+                                        <div class="input-field col s5">
+                                            <input type="text"
+                                                   class="col s12"
+                                                   name="albumGroupId"
+                                                   id="albumGroupId"
+                                                   v-model="vkAlbum.groupId">
+                                            <label for="albumGroupId">Group id</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-else-if="vkUploadImageMethod == 'wallUpload'">
+                                    <div class="input-field col s12">
+                                        <input type="text"
+                                               name="wallUploadGroup"
+                                               id="wallUploadGroup"
+                                               v-model="vkWall.groupId">
+                                        <label for="wallUploadGroup">Group id</label>
+                                    </div>
+                                </div>
+                                <div v-else>
                                 </div>
                             </div>
                         </div>

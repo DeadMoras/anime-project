@@ -1,4 +1,10 @@
 $(document).ready(function() {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="token"]').attr('content')
+        }
+    });
+
     $('select').material_select();
     $('ul.tabs').tabs();
 
@@ -22,5 +28,22 @@ $(document).ready(function() {
             $('.pagination li').addClass('waves-effect');
         }
     })();
+
+    $('.chips').material_chip();
+
+    $('.chips').on('chip.add', function(e, chip){
+        $.ajax({
+            method: 'post',
+            url: '/admin/genre/add',
+            dataType: 'json',
+            data: {
+                chip: chip.tag,
+                bundle: $("input[name='genre_bundle']").val()
+            },
+            success: function(data) {
+                $('form').appendTo('<input type="hidden" name="genres['+ data.success.id +']" value="1">');
+            }
+        });
+    });
 
 });

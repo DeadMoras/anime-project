@@ -81,6 +81,10 @@ class AuthController extends Controller
      */
     public function postAuth(Request $request)
     {
+        if ( \Auth::check() ) {
+            return response()->json(['error' => 'Вы уже авторизованы'], 402);
+        }
+
         $validator = Validator::make($request->all(), [
                 'email' => 'required',
                 'password' => 'required',
@@ -92,14 +96,18 @@ class AuthController extends Controller
 
         $user = User::where('email', $request->input('email'))->first();
 
+        if ( !$user ) {
+            return response()->json(['error' => 'We does`nt have this email'], 406);
+        }
+
         if ( $user->confirmed == 0 ) {
-            return response()->json(['error' => 'Вы не активировали аккаунт']);
+            return response()->json(['error' => 'Вы не активировали аккаунт'], 401);
         }
 
         if (\Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
-            return response()->json(['success' => 'Успех']);
+            return response()->json('Вы успешно авторизованы', 200);
         } else {
-            return response()->json(['error' => 'Неверно веденные данные.']);
+            return response()->json(['error' => 'Неверно веденные данные.'], 406);
         }
     }
 }

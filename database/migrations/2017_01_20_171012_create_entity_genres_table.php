@@ -15,8 +15,8 @@ class CreateEntityGenresTable extends Migration
     {
         Schema::create('entity_genres', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('bundle');
-            $table->integer('post_entity_id');
+            $table->string('bundle');
+            $table->integer('post_entity_id')->nullable();
             $table->integer('genre_entity_id');
         });
     }

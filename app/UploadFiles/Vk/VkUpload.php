@@ -86,6 +86,42 @@ class VkUpload implements UploadInterface
         return response()->json(['success' => $data]);
     }
 
+    /**
+     * @param $images
+     * @param $method
+     * @param $ids
+     * @return mixed
+     */
+    public function imagesUpload($images, $method, $ids)
+    {
+        return $this->{$method}($images, $ids);
+    }
+
+    /**
+     * @param $images
+     * @param $ids
+     */
+    private function albumUpload($images, $ids)
+    {
+        dd($images);
+    }
+
+    /**
+     * @param $images
+     */
+    private function wallUpload($images)
+    {
+
+    }
+
+    /**
+     * @param $images
+     */
+    private function messagesUpload($images)
+    {
+
+    }
+
     private function serviceTableInfo()
     {
         return \DB::table('upload_service')

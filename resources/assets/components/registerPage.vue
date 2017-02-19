@@ -35,7 +35,7 @@
                     div.file-field.input-field.col.s12#register-image
                         div(v-if='image.length == 0', class='btn')
                             span Аватарка
-                                input(type='file', @change='uploadImage', multiple='multiple')
+                                input(type='file', @change='uploadImage')
                         div(v-if='image.length == 0', class='file-path-wrapper')
                             input(type='text', class='file-path')
                         div(v-else-if='imageResponse.length > 0', class='imageUploaded')
@@ -156,7 +156,13 @@
                     imageUploaded: this.imageUploaded,
                     imageResponse: this.imageResponse
                 }).then(function (response) {
-                    console.log(response);
+                    for ( let k in response.data ) {
+                        Materialize.toast(response.data[k], 3000);
+                    }
+                }).catch(function (error) {
+                    for(let k of error.response.data) {
+                        Materialize.toast(k, 3000);
+                    }
                 });
             },
             socialInput(iconName) {

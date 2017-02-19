@@ -34,4 +34,17 @@ class UploadFiles
     {
         return $this->upload->uploadVideo((object) $file, (string) $path, (array) $data);
     }
+
+    /**
+     * @param object $files
+     * @param string $method
+     * @param array $ids
+     * @return mixed
+     *
+     * Главный метод интерфейса для загрузки картинок
+     */
+    public function imagesUpload($files, string $method, array $ids)
+    {
+        return $this->upload->imagesUpload((object) $files, (string) $method, (array) $ids);
+    }
 }

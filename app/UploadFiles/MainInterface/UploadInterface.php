@@ -15,4 +15,12 @@ interface UploadInterface
      * @return mixed
      */
     public function uploadVideo($file, $path, $data);
+
+    /**
+     * @param $images
+     * @param $method
+     * @param $ids
+     * @return mixed
+     */
+    public function imagesUpload($images, $method, $ids);
 }

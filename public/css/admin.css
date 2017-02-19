@@ -316,3 +316,21 @@ body {
 .series .input-field {
     margin-right: 35px;
 }
+
+/* upload image in vk */
+.choose-method_upload--image span {
+    padding: 7px 12px;
+    border-radius: 2px;
+    background: #8ea1cc;
+    color: #fff;
+}
+
+.choose-method_upload--image span:hover {
+    color: #f2f2f2;
+    cursor: pointer;
+    background: #606e8e;
+}
+
+.albumUploadInputs input {
+    margin-left: 30px;
+}

@@ -10658,7 +10658,34 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('social-icon', {
                 imageUploaded: this.imageUploaded,
                 imageResponse: this.imageResponse
             }).then(function (response) {
-                console.log(response);
+                for (var k in response.data) {
+                    Materialize.toast(response.data[k], 3000);
+                }
+            }).catch(function (error) {
+                var _iteratorNormalCompletion = true;
+                var _didIteratorError = false;
+                var _iteratorError = undefined;
+
+                try {
+                    for (var _iterator = error.response.data[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                        var k = _step.value;
+
+                        Materialize.toast(k, 3000);
+                    }
+                } catch (err) {
+                    _didIteratorError = true;
+                    _iteratorError = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion && _iterator.return) {
+                            _iterator.return();
+                        }
+                    } finally {
+                        if (_didIteratorError) {
+                            throw _iteratorError;
+                        }
+                    }
+                }
             });
         },
         socialInput: function socialInput(iconName) {
@@ -11001,8 +11028,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "btn"
   }, [_c('span', [_vm._v("Аватарка"), _c('input', {
     attrs: {
-      "type": "file",
-      "multiple": "multiple"
+      "type": "file"
     },
     on: {
       "change": _vm.uploadImage
@@ -12087,6 +12113,8 @@ module.exports = __webpack_require__(11);
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_axios__);
 //
 //
 //
@@ -12109,6 +12137,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
+
 
 /* harmony default export */ __webpack_exports__["default"] = {
     data: function data() {
@@ -12121,20 +12151,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     methods: {
         register: function register() {
             if (this.email.length > 1 && this.password.length > 1) {
-                this.$http.post('/auth', {
+                __WEBPACK_IMPORTED_MODULE_0_axios___default.a.post('/auth', {
                     email: this.email,
                     password: this.password
                 }).then(function (response) {
-                    if (response.body.error) {
-                        Materialize.toast(JSON.stringify(response.body.error), 3000);
-                    } else if (response.body.success) {
-                        location.reload();
-                    } else {
-                        var responseServer = response.body;
-                        for (var k in responseServer) {
-                            Materialize.toast(responseServer[k].toString(), 3000);
-                        }
-                    }
+                    Materialize.toast(response.data, 3000);
+                    location.reload();
+                }).catch(function (error) {
+                    Materialize.toast(error.response.data.error, 3000);
                 });
             }
         }

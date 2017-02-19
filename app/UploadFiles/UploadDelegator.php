@@ -48,18 +48,23 @@ class UploadDelegator
     }
 
     /**
-     * @param string $type
      *
      * Главный метод для загрузки фотографий.
      * В $type указывается: на стену, в личные сообщения или же загрузка в альбом
      * @return \Illuminate\Http\JsonResponse
      */
-    public function uploadImage($type = '')
+    public function uploadImage()
     {
-        $files = request()->all();
+        $method = request()->input('method');
+        $files = request()->file('images');
+        $vkIds = request()->input('vkId');
 
         if ( !$files ) {
             return response()->json(['error' => 'Nothing']);
         }
+
+        $service = new UploadFiles(new VkUpload);
+
+        return $service->imagesUpload((object) $files, (string) $method, (array) $vkIds);
     }
 }

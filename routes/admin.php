@@ -24,4 +24,7 @@ Route::group(['namespace' => 'Admin'], function () {
     // Manga
     Route::resource('/manga', 'MangaController');
     Route::post('manga/update', 'MangaController@indexUpdate');
+
+    // Genres
+    Route::post('/genre/add', 'GenresController@acceptGenre');
 });
