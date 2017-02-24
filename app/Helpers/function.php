@@ -158,3 +158,14 @@ function deleteVideoFromStorage($path)
 {
     \Illuminate\Support\Facades\Storage::delete($path);
 }
+
+function deleteVkImageFromDir($images)
+{
+    if ( is_array($images) ) {
+        foreach ( $images as $k => $v ) {
+            \Illuminate\Support\Facades\Storage::delete($v);
+        }
+    } else {
+        \Illuminate\Support\Facades\Storage::delete($images);
+    }
+}

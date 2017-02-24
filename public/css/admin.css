@@ -334,3 +334,14 @@ body {
 .albumUploadInputs input {
     margin-left: 30px;
 }
+
+.vkUploadedImage .row a {
+    width: 13.6%;
+    border: none;
+    box-shadow: none;
+    background: #afbcd8;
+}
+
+.vkUploadedImage .row a:hover {
+    background: #8e9bb9;
+}

@@ -94,7 +94,8 @@
                             <label for="manga_toms">Manga toms</label>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row"
+                         id="added_genetics">
                         @include('admin.gentetics', ['genreBundle' => 'manga'])
                     </div>
                 </div>
@@ -119,11 +120,7 @@
                              class="col s6">
                             <div class="input-field col s4 choose-method_upload--image">
                                 <span title="In album"
-                                @click="uploadVkImages('albumUpload')">A</span>
-                                <span title="On wall"
-                                @click="uploadVkImages('wallUpload')">W</span>
-                                <span title="In messages"
-                                @click="uploadVkImages('messagesUpload')">M</span>
+                                      @click="uploadVkImages('albumUpload')">A</span>
                             </div>
                             <div v-if="vkUploadImageShowForm == true"
                                  class="col s12">
@@ -131,7 +128,6 @@
                                     <div class="btn">
                                         <span>Images</span>
                                         <input type="file"
-                                               multiple
                                                @change="vkImages">
                                     </div>
                                     <div class="file-path-wrapper">
@@ -158,17 +154,20 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div v-else-if="vkUploadImageMethod == 'wallUpload'">
-                                    <div class="input-field col s12">
-                                        <input type="text"
-                                               name="wallUploadGroup"
-                                               id="wallUploadGroup"
-                                               v-model="vkWall.groupId">
-                                        <label for="wallUploadGroup">Group id</label>
-                                    </div>
-                                </div>
-                                <div v-else>
-                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row col s12 m12 l12 uploaded-images">
+                        <div v-if="vkUploadedImageId.status != false"
+                             class="vkUploadedImage">
+                            <img :src="vkUploadedImageId.src">
+                            <input type="hidden"
+                                   name="uploaded_image_tom"
+                                   :value="vkUploadedImageId.id">
+                            <div class="row">
+                                <a class="waves-effect waves-light btn"
+                                   @click="deleteTom()">Delete</a>
                             </div>
                         </div>
                     </div>
@@ -210,6 +209,17 @@
                                 <a class="waves-effect waves-light btn col s12"
                                 @click="removeImage">Удалить</a>
                             </div>
+                        </div>
+                        <div v-for="imageData in imageResponse">
+                            <input type="hidden"
+                                    name="image_mimeType"
+                                    :value="imageData.imageType">
+                            <input type="hidden"
+                                   name="image_id"
+                                   :value="imageData.imageId">
+                            <input type="hidden"
+                                   name="image_name"
+                                   :value="imageData.imageName">
                         </div>
                     </div>
                 </div>

@@ -14,9 +14,12 @@ let vm = new Vue({
             albumId: null,
             groupId: null
         },
-        vkWall: {
-            groupId: null,
-        }
+        vkUploadedImageId: {
+            id: 0,
+            src: '',
+            status: false
+        },
+        imageResponse: [],
     },
     methods: {
         uploadImage(e) {
@@ -27,16 +30,21 @@ let vm = new Vue({
             }
 
             let fd = new FormData;
-            fd.append('image', files[0]);
-            fd.append('path_to_save_image', 'anime');
-            fd.append('image_bundle', 'anime');
+            fd.append('image['+ files[0].name +']', files[0]);
+            fd.append('path_to_save_image', 'manga');
+            fd.append('image_bundle', 'manga');
             fd.append('image_width', 600);
             fd.append('image_height', 600);
 
             this.$http.post('/save_image', fd).then((response) => {
-                vm.imageResponse.imageId = response.body.image.id;
-                vm.imageResponse.imageName = response.body.image.name;
-                vm.imageResponse.imageType = response.body.image.mimetype;
+                for ( let k of response.data.image ) {
+                    let newObject = {
+                        imageId: k.id,
+                        imageName: k.name,
+                        imageType: k.mimetype
+                    };
+                    this.imageResponse.push(newObject);
+                }
             });
 
             this.imageUploaded = true;
@@ -63,6 +71,7 @@ let vm = new Vue({
             this.vkUploadImageShowForm = true;
         },
         vkImages(e) {
+            this.justWait = true;
             let files = e.target.files;
             let fd = new FormData;
             fd.append('method', this.vkUploadImageMethod);
@@ -78,8 +87,21 @@ let vm = new Vue({
             }
 
             this.$http.post('/vk-save-image', fd).then((response) => {
-                console.log(response.body);
+                this.vkUploadImageShowForm = false;
+                this.justWait = false;
+                for ( let k in response.body.success.response ) {
+                    this.vkUploadedImageId.id = response.body.success.response[k].id;
+                    this.vkUploadedImageId.src = response.body.success.response[k].src;
+                    this.vkUploadedImageId.status = true;
+                }
             });
+        },
+        deleteTom() {
+            this.vkUploadedImageId = {
+                id: 0,
+                src: '',
+                status: false
+            };
         }
     }
 });

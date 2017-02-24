@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\EntityGenre;
 use App\Models\Image;
+use App\Models\Manga;
 use App\Models\Seo;
+use App\Models\Tom;
 use App\UploadFiles\UploadFiles;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -45,10 +48,40 @@ class MangaController extends Controller
      */
     public function store(Request $request)
     {
+        // Записываем данные о манге
+        $manga = (new Manga)->newManga();
+
+        // Сохраняем том
+        (new Tom)->newTom($manga->id, $request->input('uploaded_image_tom'));
+
+        // Сохраняем жанры
+        (new EntityGenre)->updateEntity($request->input('genres'), $manga->id);
+
+        // image name
+        $newNameImage = strOther($request->input('manga_name'), '') . '.' . explode('/', $request->input('image_mimeType'))[1];
+
+        // Метод для изменения имени загруженной аватарки в базе данных
+        (new Image)->renameAvatar($newNameImage, $request->input('image_id'), true, $manga->id);
+
+        // Метод для изменения имени загружнной аватрки в папке
+        (new Image)->renameAvatarDir(explode('/', $request->input('image_name'))[3], $newNameImage, 'manga');
+
+        $seoData = [
+                'bundle' => 'manga',
+                'seo_description' => $request->input('seo_description'),
+                'seo_title' => $request->input('seo_title'),
+                'seo_keywords' => $request->input('seo_keywords'),
+                'seo_path' => $request->input('seo_path'),
+                'entity_id' => $manga->id,
+                'tin_title' => $manga->name
+        ];
+
+        (new Seo)->newSeo($seoData, true);
+
         if ($request->input('update') == '1') {
-            return redirect('admin/anime/' . $anime->id . '/edit');
+            return redirect('admin/manga/' . $manga->id . '/edit');
         } elseif ($request->input('update_close') == '1') {
-            return redirect('admin/anime');
+            return redirect('admin/manga');
         }
     }
 

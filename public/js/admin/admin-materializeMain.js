@@ -41,7 +41,7 @@ $(document).ready(function() {
                 bundle: $("input[name='genre_bundle']").val()
             },
             success: function(data) {
-                $('form').appendTo('<input type="hidden" name="genres['+ data.success.id +']" value="1">');
+                $('#added_genetics').append('<input type="hidden" name="genres['+ data.success.id +']" value="1">');
             }
         });
     });
