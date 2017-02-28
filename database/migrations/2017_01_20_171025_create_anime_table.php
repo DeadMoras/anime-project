@@ -18,6 +18,8 @@ class CreateAnimeTable extends Migration
             $table->string('name');
             $table->string('status');
             $table->integer('visits')->default(0);
+            $table->integer('likes')->default(0);
+            $table->integer('user_entity_id');
             $table->string('year');
             $table->string('age');
             $table->integer('same_entity_id')->nullable();

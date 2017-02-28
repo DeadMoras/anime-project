@@ -89,6 +89,24 @@ class AdminSearch extends Controller
     }
 
     /**
+     *
+     */
+    private function manga()
+    {
+        $data = DB::table('manga')
+                ->select('manga.id', 'manga.name', 'manga.status', 'manga.visits', 'images.name as image_name')
+                ->leftJoin('images', 'images.entity_id', '=', 'manga.id')
+                ->where('manga.id', 'LIKE', '%' . $this->text . '%')
+                ->orWhere('manga.name', 'LIKE', '%' . $this->text . '%')
+                ->orWhere('manga.status', 'LIKE', '%' . $this->text . '%')
+                ->get();
+
+        $this->data = $data;
+
+        return $this->responseFromSearch();
+    }
+
+    /**
      * Метод который возвращает клиенту данные
      * Позже сделать перебор и привести данные в порядок
      */

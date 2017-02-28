@@ -21,11 +21,7 @@ let vm = new Vue({
             group_id: null,
             album_id: null,
         },
-        imageResponse: {
-            imageId: null,
-            imageName: '',
-            imageType: ''
-        },
+        imageResponse: [],
     },
     methods: {
         uploadImage(e) {
@@ -36,16 +32,21 @@ let vm = new Vue({
             }
 
             let fd = new FormData;
-            fd.append('image', files[0]);
+            fd.append('image['+ files[0].name +']', files[0]);
             fd.append('path_to_save_image', 'anime');
             fd.append('image_bundle', 'anime');
-            fd.append('image_width', 600);
-            fd.append('image_height', 600);
+            fd.append('image_width', 700);
+            fd.append('image_height', 500);
 
             this.$http.post('/save_image', fd).then((response) => {
-                vm.imageResponse.imageId = response.body.image.id;
-                vm.imageResponse.imageName = response.body.image.name;
-                vm.imageResponse.imageType = response.body.image.mimetype;
+                for ( let k of response.data.image ) {
+                    let newObject = {
+                        imageId: k.id,
+                        imageName: k.name,
+                        imageType: k.mimetype
+                    };
+                    this.imageResponse.push(newObject);
+                }
             });
 
             this.imageUploaded = true;

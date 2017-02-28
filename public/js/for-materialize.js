@@ -3,7 +3,7 @@
     $(document).ready(function () {
         $('ul.tabs').tabs();
         $('.parallax').parallax();
-        $('.modal-auth_a').leanModal();
+        $('.modal').modal();
 
         $('.dropdown-button').dropdown({
                     inDuration: 300,

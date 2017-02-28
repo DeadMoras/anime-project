@@ -127,7 +127,7 @@ class VkUpload implements UploadInterface
 
         $response = json_decode($data);
 
-        if ( !$response->response ) {
+        if ( !$response ) {
             return response()->json(['error' => 'Not access'], 406);
         }
 

@@ -4,7 +4,6 @@
 
 @section('content')
 
-    <div id="indexVue">
         <div class="col s12 m12 l12 index-with_anime--background">
             <div class="col s12 m12 l12 auth-register">
                 @if ( Auth::check() )
@@ -27,262 +26,14 @@
                 </p>
             </div>
             <div class="row col s12 m12 l12 background-slider">
-                <div class="row col s12 m12 l4">
-                    <div class="title">
-                        <h5 class="center-align">Последние юзеры</h5>
-                    </div>
-                    <ul class="collection">
-                        <li class="collection-item avatar">
-                            <img src="https://pp.vk.me/c626319/v626319889/2f8c2/mNoZa2C3VIY.jpg"
-                                 alt=""
-                                 class="circle">
-                            <span class="title">Title</span>
-                            <a href="#!"
-                               class="secondary-content">
-                                <i class="fa fa-user-circle"
-                                   aria-hidden="true"></i>
-                            </a>
-                        </li>
-                        <li class="collection-item avatar">
-                            <img src="https://pp.vk.me/c626319/v626319889/2f8c2/mNoZa2C3VIY.jpg"
-                                 alt=""
-                                 class="circle">
-                            <span class="title">Title</span>
-                            <a href="#!"
-                               class="secondary-content">
-                                <i class="fa fa-user-circle"
-                                   aria-hidden="true"></i>
-                            </a>
-                        </li>
-                        <li class="collection-item avatar">
-                            <img src="https://pp.vk.me/c626319/v626319889/2f8c2/mNoZa2C3VIY.jpg"
-                                 alt=""
-                                 class="circle">
-                            <span class="title">Title</span>
-                            <a href="#!"
-                               class="secondary-content">
-                                <i class="fa fa-user-circle"
-                                   aria-hidden="true"></i>
-                            </a>
-                        </li>
-                        <li class="collection-item avatar">
-                            <img src="https://pp.vk.me/c626319/v626319889/2f8c2/mNoZa2C3VIY.jpg"
-                                 alt=""
-                                 class="circle">
-                            <span class="title">Title</span>
-                            <a href="#!"
-                               class="secondary-content">
-                                <i class="fa fa-user-circle"
-                                   aria-hidden="true"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="row col s12 m12 l4">
-                    <div class="title">
-                        <h5 class="center-align">Новые темы</h5>
-                    </div>
-                    <ul class="collection">
-                        <li class="collection-item avatar">
-                            <img src="https://pp.vk.me/c626319/v626319889/2f8c2/mNoZa2C3VIY.jpg"
-                                 alt=""
-                                 class="circle">
-                            <span class="title">Title</span>
-                            <a href="#!"
-                               class="secondary-content">
-                                <i class="fa fa-comment"
-                                   aria-hidden="true"></i>
-                            </a>
-                        </li>
-                        <li class="collection-item avatar">
-                            <img src="https://pp.vk.me/c626319/v626319889/2f8c2/mNoZa2C3VIY.jpg"
-                                 alt=""
-                                 class="circle">
-                            <span class="title">Title</span>
-                            <a href="#!"
-                               class="secondary-content">
-                                <i class="fa fa-comment"
-                                   aria-hidden="true"></i>
-                            </a>
-                        </li>
-                        <li class="collection-item avatar">
-                            <img src="https://pp.vk.me/c626319/v626319889/2f8c2/mNoZa2C3VIY.jpg"
-                                 alt=""
-                                 class="circle">
-                            <span class="title">Title</span>
-                            <a href="#!"
-                               class="secondary-content">
-                                <i class="fa fa-comment"
-                                   aria-hidden="true"></i>
-                            </a>
-                        </li>
-                        <li class="collection-item avatar">
-                            <img src="https://pp.vk.me/c626319/v626319889/2f8c2/mNoZa2C3VIY.jpg"
-                                 alt=""
-                                 class="circle">
-                            <span class="title">Title</span>
-                            <a href="#!"
-                               class="secondary-content">
-                                <i class="fa fa-comment"
-                                   aria-hidden="true"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="row col s12 m12 l4">
-                    <div class="title">
-                        <h5 class="center-align">Последние видео</h5>
-                    </div>
-                    <ul class="collection">
-                        <li class="collection-item avatar">
-                            <img src="https://pp.vk.me/c626319/v626319889/2f8c2/mNoZa2C3VIY.jpg"
-                                 alt=""
-                                 class="circle">
-                            <span class="title">Title</span>
-                            <a href="#!"
-                               class="secondary-content">
-                                <i class="fa fa-play-circle"
-                                   aria-hidden="true"></i>
-                            </a>
-                        </li>
-                        <li class="collection-item avatar">
-                            <img src="https://pp.vk.me/c626319/v626319889/2f8c2/mNoZa2C3VIY.jpg" alt="" class="circle">
-                            <span class="title">Title</span>
-                            <a href="#!"
-                               class="secondary-content">
-                                <i class="fa fa-play-circle"
-                                   aria-hidden="true"></i>
-                            </a>
-                        </li>
-                        <li class="collection-item avatar">
-                            <img src="https://pp.vk.me/c626319/v626319889/2f8c2/mNoZa2C3VIY.jpg" alt="" class="circle">
-                            <span class="title">Title</span>
-                            <a href="#!"
-                               class="secondary-content">
-                                <i class="fa fa-play-circle"
-                                   aria-hidden="true"></i>
-                            </a>
-                        </li>
-                        <li class="collection-item avatar">
-                            <img src="https://pp.vk.me/c626319/v626319889/2f8c2/mNoZa2C3VIY.jpg"
-                                 alt=""
-                                 class="circle">
-                            <span class="title">Title</span>
-                            <a href="#!"
-                               class="secondary-content">
-                                <i class="fa fa-play-circle"
-                                   aria-hidden="true"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                <index-block-info></index-block-info>
             </div>
         </div>
 
         <div class="row main-container">
 
             <div class="col s12 m12 l7 main-content">
-                <div class="row col s12 m12 l12 each-anime">
-                    <h5 class="center-align">Название аниме</h5>
-                    <div class="col s12 m12 l12 each-anime_image">
-                        <img src="https://i.ytimg.com/vi/WDElrHcEEGY/maxresdefault.jpg">
-                    </div>
-                    <p class="each-anime_description">
-                        Что-то будет на русскомЧто-то будет на русскомЧто-то будет на русскомЧто-то будет на русском
-                        Что-то будет на русскомЧто-то будет на русскомЧто-то будет на русскомЧто-то будет на русском
-                        Что-то будет на русскомЧто-то будет на русскомЧто-то будет на русскомЧто-то будет на русском
-                        Что-то будет на русскомЧто-то будет на русскомЧто-то будет на русскомЧто-то будет на русском
-                        Что-то будет на русскомЧто-то будет на русскомЧто-то будет на русскомЧто-то будет на русском
-                        Что-то будет на русскомЧто-то будет на русскомЧто-то будет на русскомЧто-то будет на русском
-                    </p>
-                    <div class="col s12 m12 l12 each-anime_bottom--panel">
-					<span class="each-anime_bottom--panel__author">
-						<img src="https://pp.vk.me/c626319/v626319889/2f8c2/mNoZa2C3VIY.jpg">
-					</span>
-                        <span class="each-anime_bottom--panel__events">
-						<i class="fa fa-eye left"
-                           aria-hidden="true"></i>
-						<span>2</span>
-					</span>
-                        <span class="each-anime_bottom--panel__likes">
-						<i class="fa fa-heart-o left"
-                           aria-hidden="true"></i>
-						<span>3</span>
-					</span>
-                        <a href="#">
-                            <i class="fa fa-arrow-circle-right right"
-                               aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="row col s12 m12 l12 each-anime">
-                    <h5 class="center-align">Название аниме</h5>
-                    <div class="col s12 m12 l12 each-anime_image">
-                        <img src="https://i.ytimg.com/vi/WDElrHcEEGY/maxresdefault.jpg">
-                    </div>
-                    <p class="each-anime_description">
-                        Что-то будет на русскомЧто-то будет на русскомЧто-то будет на русскомЧто-то будет на русском
-                        Что-то будет на русскомЧто-то будет на русскомЧто-то будет на русскомЧто-то будет на русском
-                        Что-то будет на русскомЧто-то будет на русскомЧто-то будет на русскомЧто-то будет на русском
-                        Что-то будет на русскомЧто-то будет на русскомЧто-то будет на русскомЧто-то будет на русском
-                        Что-то будет на русскомЧто-то будет на русскомЧто-то будет на русскомЧто-то будет на русском
-                        Что-то будет на русскомЧто-то будет на русскомЧто-то будет на русскомЧто-то будет на русском
-                    </p>
-                    <div class="col s12 m12 l12 each-anime_bottom--panel">
-					<span class="each-anime_bottom--panel__author">
-						<img src="https://pp.vk.me/c626319/v626319889/2f8c2/mNoZa2C3VIY.jpg">
-					</span>
-                        <span class="each-anime_bottom--panel__events">
-						<i class="fa fa-eye left"
-                           aria-hidden="true"></i>
-						<span>2</span>
-					</span>
-                        <span class="each-anime_bottom--panel__likes">
-						<i class="fa fa-heart-o left"
-                           aria-hidden="true"></i>
-						<span>3</span>
-					</span>
-                        <a href="#">
-                            <i class="fa fa-arrow-circle-right right"
-                               aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="row col s12 m12 l12 each-anime">
-                    <h5 class="center-align">Название аниме</h5>
-                    <div class="col s12 m12 l12 each-anime_image">
-                        <img src="https://i.ytimg.com/vi/WDElrHcEEGY/maxresdefault.jpg">
-                    </div>
-                    <p class="each-anime_description">
-                        Что-то будет на русскомЧто-то будет на русскомЧто-то будет на русскомЧто-то будет на русском
-                        Что-то будет на русскомЧто-то будет на русскомЧто-то будет на русскомЧто-то будет на русском
-                        Что-то будет на русскомЧто-то будет на русскомЧто-то будет на русскомЧто-то будет на русском
-                        Что-то будет на русскомЧто-то будет на русскомЧто-то будет на русскомЧто-то будет на русском
-                        Что-то будет на русскомЧто-то будет на русскомЧто-то будет на русскомЧто-то будет на русском
-                        Что-то будет на русскомЧто-то будет на русскомЧто-то будет на русскомЧто-то будет на русском
-                    </p>
-                    <div class="col s12 m12 l12 each-anime_bottom--panel">
-					<span class="each-anime_bottom--panel__author">
-						<img src="https://pp.vk.me/c626319/v626319889/2f8c2/mNoZa2C3VIY.jpg">
-					</span>
-                        <span class="each-anime_bottom--panel__events">
-						<i class="fa fa-eye left"
-                           aria-hidden="true"></i>
-						<span>2</span>
-					</span>
-                        <span class="each-anime_bottom--panel__likes">
-						<i class="fa fa-heart-o left"
-                           aria-hidden="true"></i>
-						<span>3</span>
-					</span>
-                        <a href="#">
-                            <i class="fa fa-arrow-circle-right right"
-                               aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div>
+                <anime-index></anime-index>
             </div>
 
             <div class="col s12 m12 l3 right-sidebar">
@@ -322,7 +73,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     @include('user.auth.auth')
 

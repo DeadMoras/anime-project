@@ -345,3 +345,16 @@ body {
 .vkUploadedImage .row a:hover {
     background: #8e9bb9;
 }
+
+.toms-to_manga div img {
+    max-width: 215px;
+}
+
+.each-tom_images {
+    width: 30% !important;
+}
+
+.uploadedImagesToTomClass img {
+    widht: 80px;
+    height: 80px;
+}

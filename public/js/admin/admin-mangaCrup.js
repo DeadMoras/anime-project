@@ -20,6 +20,9 @@ let vm = new Vue({
             status: false
         },
         imageResponse: [],
+        imagesToTom: [],
+        vkUploadedImageToms: [],
+        vkUploadedImagesToToms: 0,
     },
     methods: {
         uploadImage(e) {
@@ -102,6 +105,52 @@ let vm = new Vue({
                 src: '',
                 status: false
             };
+        },
+        addToTom(id) {
+            this.vkUploadedImagesToToms = id;
+            this.$http.post('/admin/to-toms', {
+                tomId: id
+            }).then((response) => {
+                if ( response.body.success ) {
+                    for ( let k in response.body.success ) {
+                        let newObject = {
+                            id: response.body.success[k].each_tom_id,
+                            src: response.body.success[k].src,
+                            vk_images_id: response.body.success[k].vk_images_id
+                        };
+
+                        this.imagesToTom.push(newObject);
+                    }
+                }
+            });
+        },
+        uploadedToms() {
+
+        },
+        uploadImagesToTom(e) {
+            this.justWait = true;
+            let files = e.target.files;
+            let fd = new FormData;
+            fd.append('method', 'albumUpload');
+            fd.append('vkId[albumId]', this.vkAlbum.albumId);
+            fd.append('vkId[groupId]', this.vkAlbum.groupId);
+
+            for ( let k of files ) {
+                fd.append('images[]', k);
+            }
+
+            this.$http.post('/vk-save-image', fd).then((response) => {
+                this.vkUploadImageShowForm = false;
+                this.justWait = false;
+                for ( let k in response.body.success.response ) {
+                    let newObject = {
+                        id: response.body.success.response[k].id,
+                        src: response.body.success.response[k].src,
+                    };
+
+                    this.vkUploadedImageToms.push(newObject);
+                }
+            });
         }
     }
 });

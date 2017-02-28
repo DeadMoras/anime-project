@@ -97,6 +97,19 @@
                     <div class="row"
                          id="added_genetics">
                         @include('admin.gentetics', ['genreBundle' => 'manga'])
+                        @if ( false == $is_new )
+                            @foreach ( $genres as $genre )
+                                <input type="hidden"
+                                       name="genres[{{ $genre->entity_genres_id }}]"
+                                       value="0">
+                                <input type="checkbox"
+                                       id="genre-{{$genre->entity_genres_id}}"
+                                       name="genres[{{$genre->entity_genres_id}}]"
+                                       checked
+                                       value="1">
+                                <label for="genre-{{$genre->entity_genres_id}}">{{ $genre->genres_name }}</label>
+                            @endforeach
+                        @endif
                     </div>
                 </div>
                 <div id="toms" class="col s12">
@@ -163,14 +176,36 @@
                              class="vkUploadedImage">
                             <img :src="vkUploadedImageId.src">
                             <input type="hidden"
-                                   name="uploaded_image_tom"
+                                   name="uploaded-tom_to--manga"
                                    :value="vkUploadedImageId.id">
                             <div class="row">
                                 <a class="waves-effect waves-light btn"
-                                   @click="deleteTom()">Delete</a>
+                                @click="deleteTom()">Delete</a>
                             </div>
                         </div>
                     </div>
+                    @if ( false == $is_new )
+                        <div class="row col s12 m12 l12 toms-to_manga">
+                            @foreach( $toms as $tom )
+                                <div class="col s3">
+                                    <img src="{{ $tom->vk_images_big }}">
+                                    <a href="#each-tom_images"
+                                       class="modal-trigger waves-light waves-effect btn col s12"
+                                       @click="addToTom({{$tom->tom_id}})">Add</a>
+                                    <div class="input-field col s12">
+                                        <input type="hidden"
+                                               name="delete-tom[{{$tom->tom_id}}]"
+                                               value="0">
+                                        <input type="checkbox"
+                                               name="delete-tom[{{$tom->tom_id}}]"
+                                               id="delete-tom-{{$tom->tom_id}}"
+                                               value="1">
+                                        <label for="delete-tom-{{$tom->tom_id}}">Delete</label>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
                 <div id="seo" class="col s12">
                     @include('seo.main', ['data' => $manga])
@@ -225,6 +260,92 @@
                 </div>
             </div>
 
+            {{-- modal for add images for each tom --}}
+            <div id="each-tom_images" class="modal each-tom_images">
+                <div class="modal-content">
+                    <div class="file-field input-field col s12">
+                        <div class="btn">
+                            <span>Images</span>
+                            <input type="file"
+                                   multiple
+                                @change="uploadImagesToTom">
+                        </div>
+                        <div class="file-path-wrapper">
+                            <input class="file-path validate" type="text">
+                        </div>
+                    </div>
+                    <div class="col s12 albumUploadInputs">
+                            <div class="input-field col s5">
+                                <input type="text"
+                                       class="col s12"
+                                       name="albumId"
+                                       id="albumId"
+                                       v-model="vkAlbum.albumId">
+                                <label for="albumId">Album id</label>
+                            </div>
+                            <div class="input-field col s5">
+                                <input type="text"
+                                       class="col s12"
+                                       name="albumGroupId"
+                                       id="albumGroupId"
+                                       v-model="vkAlbum.groupId">
+                                <label for="albumGroupId">Group id</label>
+                            </div>
+                        </div>
+                    <div v-if="vkUploadedImageToms.length"
+                         class="row vkUploadedImage">
+                        <div v-for="uploadedToms in vkUploadedImageToms"
+                             class="col s5 m5 l5 uploadedImagesToTomClass">
+                            <img :src="uploadedToms.src">
+                            <input type="hidden"
+                                   :name="'uploaded_image_tom['+ uploadedToms.id +']'"
+                                   :value="uploadedToms.id">
+                            <div class="row">
+                                <input type="hidden"
+                                       :name="'delete-images_to--tom['+ uploadedToms.id +']'"
+                                       value="0">
+                                <input type="checkbox"
+                                       :name="'delete-images_to--tom['+ uploadedToms.id +']'"
+                                       :id="'delete-images_tom-'+ uploadedToms.id"
+                                       value="1"
+                                       checked>
+                                <label :for="'delete-images_tom-'+ uploadedToms.id">Delete</label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <p>
+                        <div v-if="imagesToTom">
+                            <div v-for="uploadedTomSaved in imagesToTom"
+                                 class="col s5 m5 l5 uploadedImagesToTomClass">
+                                <img :src="uploadedTomSaved.src">
+                                <input type="hidden"
+                                       :name="'uploaded_image_tom['+ uploadedTomSaved.id +']'"
+                                       :value="uploadedTomSaved.id">
+                                <div class="row">
+                                    <input type="hidden"
+                                           :name="'delete-images_to--tom['+ uploadedTomSaved.id +']'"
+                                           value="0">
+                                    <input type="checkbox"
+                                           :name="'delete-images_to--tom['+ uploadedTomSaved.id +']'"
+                                           :id="'delete-images_tom-'+ uploadedTomSaved.id"
+                                           value="1"
+                                           checked>
+                                    <label :for="'delete-images_tom-'+ uploadedTomSaved.id"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+            {{-- end modal --}}
+
+            <input type="hidden"
+                   name="uploaded-images_to--tom__id"
+                   :value="vkUploadedImagesToToms">
+
             @if ( $is_new == false )
                 <input type="hidden"
                        name="seo_id"
@@ -266,3 +387,4 @@
     <script src="{{ asset('js/admin/admin-mangaCrup.js') }}"></script>
 
 @endsection
+

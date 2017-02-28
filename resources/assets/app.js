@@ -1,12 +1,23 @@
 import Vue from 'vue';
 import store from './store/store.js';
-import registerPage from './components/registerPage.vue';
-import authModal from './components/authModal.vue';
+import footerComponent from './components/patterns/footerComponent.vue';
+import headerComponent from './components/patterns/headerComponent.vue';
+import router from './router.js';
+import { mapActions } from 'vuex';
 
 const app = new Vue({
     store,
+    router,
     el: '#app',
     components: {
-        registerPage, authModal
+        footerComponent, headerComponent
+    },
+    methods: {
+        ...mapActions([
+            'changeInfo'
+        ])
+    },
+    mounted() {
+        let self = this;
     }
 });

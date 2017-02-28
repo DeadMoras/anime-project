@@ -213,15 +213,17 @@
                                        name="uploaded-video"
                                        :value="newVideoLink">
                             </div>
-                            <input type="hidden"
-                                   name="image_mimeType"
-                                   :value="imageResponse.imageType">
-                            <input type="hidden"
-                                   name="image_id"
-                                   :value="imageResponse.imageId">
-                            <input type="hidden"
-                                   name="image_name"
-                                   :value="imageResponse.imageName">
+                            <div v-for="imageData in imageResponse">
+                                <input type="hidden"
+                                       name="image_mimeType"
+                                       :value="imageData.imageType">
+                                <input type="hidden"
+                                       name="image_id"
+                                       :value="imageData.imageId">
+                                <input type="hidden"
+                                       name="image_name"
+                                       :value="imageData.imageName">
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -22,6 +22,7 @@
 
 <script>
     import axios from 'axios';
+    import { getToken, saveToken } from '../modules/token';
 
     export default {
         data() {
@@ -32,15 +33,19 @@
         },
         methods: {
             register() {
+                let self = this;
                 if (this.email.length > 1 && this.password.length > 1) {
-                    axios.post('/auth', {
-                        email: this.email,
-                        password: this.password
+                    axios.post('/api/auth', {
+                        data: {
+                            email: this.email,
+                            password: this.password
+                        },
+                        token: getToken()
                     }).then(function (response) {
-                        Materialize.toast(response.data, 3000);
+                        saveToken(response.data.success.remember_token);
                         location.reload();
                     }).catch(function (error) {
-                        Materialize.toast(error.response.data.error, 3000);
+                        Materialize.toast(JSON.stringify(error.response.data.error), 3000);
                     });
                 }
             }

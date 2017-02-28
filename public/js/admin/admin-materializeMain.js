@@ -6,6 +6,7 @@ $(document).ready(function() {
     });
 
     $('select').material_select();
+    $('.modal').modal();
     $('ul.tabs').tabs();
 
     $('body').on('change', '#items-list-action', function() {

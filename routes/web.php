@@ -1,15 +1,23 @@
 <?php
 
+Route::post('/api/auth', 'Api\Auth\AuthController@postAuth');
+
 Route::group(['namespace' => 'User'], function() {
     // Auth Routers
-    Route::get('/register', 'Auth\AuthController@getRegister');
+//    Route::get('/register', 'Auth\AuthController@getRegister');
     Route::post('/register', 'Auth\AuthController@postRegister');
-    Route::post('/auth', 'Auth\AuthController@postAuth');
 
     // Activate account code
     Route::get('/activate/{code?}', 'Auth\ActivateController@activateAccount');
 
+    // Index
     Route::get('/', 'Index\IndexController@getIndex');
+
+    // Statictic for vue
+    Route::get('/index-statistic', 'Index\IndexController@getStatisticInfo');
+
+    // Anime for vue
+    Route::get('/get-anime', 'Anime\AnimeController@getAnime');
 });
 
 //image controller

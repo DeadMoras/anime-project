@@ -21,7 +21,7 @@ class GenresController extends Controller
         $result = Genre::where('name', $chip)->first();
 
         $newChip = new \stdClass();
-        if ( !$result ) {
+        if (!$result) {
             $newChip = $this->newGenre($chip);
         } else {
             $newChip = $result;
@@ -44,5 +44,21 @@ class GenresController extends Controller
         return Genre::create([
                 'name' => $chip
         ]);
+    }
+
+    /**
+     * @param int $id
+     *
+     * Возвращает жанры по айди
+     * @param string $bundle
+     */
+    public function getGenres(int $id, string $bundle)
+    {
+        return \DB::table('genres')
+                ->select('genres.name as genres_name', 'entity_genres.id as entity_genres_id')
+                ->leftJoin('entity_genres', 'entity_genres.genre_entity_id', '=', 'genres.id')
+                ->where('entity_genres.bundle', $bundle)
+                ->where('entity_genres.post_entity_id', $id)
+                ->get();
     }
 }

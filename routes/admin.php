@@ -27,4 +27,7 @@ Route::group(['namespace' => 'Admin'], function () {
 
     // Genres
     Route::post('/genre/add', 'GenresController@acceptGenre');
+
+    // Images to tom
+    Route::post('/to-toms', 'TomsController@getImages');
 });

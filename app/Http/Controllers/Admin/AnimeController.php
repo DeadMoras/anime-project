@@ -78,7 +78,7 @@ class AnimeController extends Controller
         (new Image)->renameAvatar($newNameImage, $request->input('image_id'), true, $anime->id);
 
         // Метод для изменения имени загружнной аватрки в папке
-        (new Image)->renameAvatarDir($request->input('image_name'), $newNameImage, 'anime');
+        (new Image)->renameAvatarDir(explode('/', $request->input('image_name'))[3], $newNameImage, 'anime');
 
         $seoData = [
                 'bundle' => 'anime',
@@ -189,7 +189,7 @@ class AnimeController extends Controller
             $image->renameAvatar($newNameImage, $request->input('image_id'), true, $anime->id);
 
 //             Метод для изменения имени загружнной аватрки в папке
-            $image->renameAvatarDir($request->input('image_name'), $newNameImage, 'anime');
+            $image->renameAvatarDir(explode('/', $request->input('image_name'))[3], $newNameImage, 'anime');
         }
 
         $seoData = [
@@ -227,7 +227,7 @@ class AnimeController extends Controller
         $text = $request->input('text');
 
         $data = Anime::where('name', 'LIKE', '%' . $text . '%')
-                ->get();
+                ->first();
 
         if ($data) {
             return response()->json(['data' => $data]);
