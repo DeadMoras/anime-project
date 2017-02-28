@@ -1,7 +1,5 @@
 <?php
 
-Route::post('/api/auth', 'Api\Auth\AuthController@postAuth');
-
 Route::group(['namespace' => 'User'], function() {
     // Auth Routers
 //    Route::get('/register', 'Auth\AuthController@getRegister');
