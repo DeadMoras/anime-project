@@ -19,31 +19,33 @@ class AuthController extends Controller
     {
         $error = new Errors;
 
-        $validator = Validator::make($request->all(), [
+        $validator = Validator::make(
+            $request->all(), [
             'user.email'    => 'required|min:6|max:30|unique:users,email',
             'user.password' => 'required|min:4|max:30',
             'user.login'    => 'required|min:4|max:25',
         ]);
 
         if ($validator->fails()) {
-            return response()->json($error->changeErrorTrue()
-                ->addObject('error_code', 406)
-                ->addObject('error_data', $validator->messages()), 406);
+            return response()->json(
+                $error->changeErrorTrue()
+                    ->addObject('error_code', 406)
+                    ->addObject('error_data', $validator->messages()), 406);
         }
 
-        if ($request->input('user.password')
-            !== $request->input('user.passwordConfirmation')
-        ) {
-            return response()->json($error->changeErrorTrue()
-                ->addObject('error_code', 406)
-                ->addOjbect('error_data', 'Пароли не совпадают'), 406);
+        if ($request->input('user.password') !== $request->input('user.passwordConfirmation')) {
+            return response()->json(
+                $error->changeErrorTrue()
+                    ->addObject('error_code', 406)
+                    ->addOjbect('error_data', 'Пароли не совпадают'), 406);
         }
         if ( ! is_array(request()->input('imageUploaded'))) {
-            return response()->json($error->changeErrorTrue()
-                ->addObject('error_code', 406)
-                ->addObject('error_data',
-                    'Неверный формат картинки. Картинки должны быть в массиве')
-                ->getResponse(), 406);
+            return response()->json(
+                $error->changeErrorTrue()
+                    ->addObject('error_code', 406)
+                    ->addObject(
+                        'error_data', 'Неверный формат картинки. Картинки должны быть в массиве')
+                    ->getResponse(), 406);
         }
 
         // Письмо для подтверждения аккаунта
@@ -70,29 +72,30 @@ class AuthController extends Controller
 
         if (request()->input('imageUploaded') == true) {
             foreach (request()->input('imageResponse') as $key => $value) {
-                $userNameForAvatarMime = $userNameForAvatar.'.'.explode('/',
-                        $value['imageType'])[1];
+                $userNameForAvatarMime = $userNameForAvatar.'.'.explode(
+                        '/', $value['imageType'])[1];
 
                 // Метод для изменения имени загруженной аватарки в базе данных
-                (new Image)->renameAvatar($userNameForAvatarMime,
-                    $value['imageId'], true, $user->id);
+                (new Image)->renameAvatar(
+                    $userNameForAvatarMime, $value['imageId'], true, $user->id);
 
                 // Метод для изменения имени загружнной аватрки в папке
                 // Юзаю explode, ибо я дурачек, который передает images/user, а в этом методе это дописывается...
-                (new Image)->renameAvatarDir(explode('/',
-                    $value['imageName'])[3], $userNameForAvatarMime,
-                    'user');
+                (new Image)->renameAvatarDir(
+                    explode(
+                        '/', $value['imageName'])[3], $userNameForAvatarMime, 'user');
             }
         } else {
             $userDefaultImage = (new Image)->createNewDefaultImage('users');
 
             // Метод для изменения имени загруженной аватарки в базе данных
-            (new Image)->renameAvatar('default.jpg', $userDefaultImage->id,
-                true, $user->id);
+            (new Image)->renameAvatar(
+                'default.jpg', $userDefaultImage->id, true, $user->id);
         }
 
-        return response()->json($error->addObject('response',
-            'Спасибо за регистрацию')
-            ->getResponse(), 200);
+        return response()->json(
+            $error->addObject(
+                'response', 'Спасибо за регистрацию')
+                ->getResponse(), 200);
     }
 }

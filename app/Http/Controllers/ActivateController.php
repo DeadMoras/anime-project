@@ -22,16 +22,18 @@ class ActivateController extends Controller
 
     private function checkCode()
     {
-        $user = User::where('code_confirm', $this->code)->firstOrFail();
+        $user = User::where('code_confirm', $this->code)
+            ->firstOrFail();
 
-        if ( !$user ) {
+        if ( ! $user) {
             return 'Not correct code';
         }
 
-        if ( $user->code_confirm === $this->code ) {
+        if ($user->code_confirm === $this->code) {
             $user->confirmed = 1;
             $user->code_confirm = null;
             $user->save();
+
             return 'true';
         }
 

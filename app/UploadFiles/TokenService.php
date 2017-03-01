@@ -15,10 +15,10 @@ class TokenService
     {
         $this->code = request()->get('code');
 
-        $newUrl = 'https://oauth.vk.com/access_token?client_id=' . config('uploadfilesdata.vk.app_id');
-        $newUrl .= '&client_secret=' . config('uploadfilesdata.vk.secure_key');
+        $newUrl = 'https://oauth.vk.com/access_token?client_id='.config('uploadfilesdata.vk.app_id');
+        $newUrl .= '&client_secret='.config('uploadfilesdata.vk.secure_key');
         $newUrl .= '&redirect_uri=http://anime-music.ru/upload-service/token';
-        $newUrl .= '&code=' . $this->code;
+        $newUrl .= '&code='.$this->code;
 
         $token = file_get_contents($newUrl);
 
@@ -30,26 +30,28 @@ class TokenService
     /**
      * @param $token
      */
-    private function saveDb( $token )
+    private function saveDb($token)
     {
         $oldToken = \DB::table('upload_service')
-                ->where('bundle', 'vk')
-                ->where('user_entity_id', \Auth::user()->id)
-                ->first();
+            ->where('bundle', 'vk')
+            ->where('user_entity_id', \Auth::user()->id)
+            ->first();
 
-        if ( $oldToken ) {
+        if ($oldToken) {
             \DB::table('upload_service')
                 ->where('id', $oldToken->id)
-                ->update([
-                        'token' => json_decode($token)->access_token
-                ]);
+                ->update(
+                    [
+                        'token' => json_decode($token)->access_token,
+                    ]);
         } else {
             \DB::table('upload_service')
-                    ->insert([
-                            'token' => json_decode($token)->access_token,
-                            'bundle' => 'vk',
-                            'vk_user_id' => json_decode($token)->user_id,
-                            'user_entity_id' => \Auth::user()->id,
+                ->insert(
+                    [
+                        'token'          => json_decode($token)->access_token,
+                        'bundle'         => 'vk',
+                        'vk_user_id'     => json_decode($token)->user_id,
+                        'user_entity_id' => \Auth::user()->id,
                     ]);
         }
     }

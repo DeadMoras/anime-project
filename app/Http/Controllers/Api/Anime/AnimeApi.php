@@ -17,27 +17,26 @@ class AnimeApi extends Controller
     {
         $error = new Errors();
 
-        $data = Anime::with([
-            'author' => function ($query) {
-                $query->select('users.id');
-                $query->with([
-                    'imagesUser' => function ($query) {
-                        $query->where('bundle', '=', 'user')
-                            ->select('images.name', 'images.entity_id');
-                    },
-                ]);
-            },
-        ])
-            ->with([
-                'imagesAnime' => function ($query) {
-                    $query->where('bundle', '=', 'anime')
-                        ->select('images.name', 'images.entity_id');
+        $data = Anime::with(
+            [
+                'author'           => function ($q) {
+                    $q->select('id');
+                },
+                'author.userInfo'  => function ($q) {
+                    $q->select('entity_id', 'login');
+                },
+                'author.userImage' => function ($q) {
+                    $q->select('entity_id', 'name as link');
+                },
+                'animeImage'       => function ($q) {
+                    $q->select('entity_id', 'name as link');
                 },
             ])
-            ->take(20)
+            ->take(1)
             ->get();
 
-        return response()->json($error->addObject('response', $data)
-            ->getResponse(), 200);
+        return response()->json(
+            $error->addObject('response', $data)
+                ->getResponse(), 200);
     }
 }

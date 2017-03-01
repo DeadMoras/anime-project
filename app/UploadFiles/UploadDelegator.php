@@ -18,29 +18,31 @@ class UploadDelegator
 
         $mimeType = explode('/', $file->getMimeType())[1];
 
-        if ('mpeg' != $mimeType &&
-                'mp4' != $mimeType &&
-                'ogg' != $mimeType &&
-                'quicktime' != $mimeType &&
-                'webm' != $mimeType &&
-                'x-ms-wmv' != $mimeType &&
-                'x-flv' != $mimeType
+        if ('mpeg' != $mimeType
+            && 'mp4' != $mimeType
+            && 'ogg' != $mimeType
+            && 'quicktime' != $mimeType
+            && 'webm' != $mimeType
+            && 'x-ms-wmv' != $mimeType
+            && 'x-flv' != $mimeType
         ) {
             return response()->json(['error' => 'it`s not a video']);
         }
 
         // Временное сохранение видео, чтобы можно было передать его
-        $path = request()->file('video')->store('videos');
+        $path = request()
+            ->file('video')
+            ->store('videos');
 
         $service = new UploadFiles(new VkUpload);
 
         // информация о видео
         $data = [
-                'title' => (string) request()->input('title'),
-                'description' => (string) request()->input('description'),
-                'wallpost' => (int) request()->input('wallpost'),
-                'group_id' => (int) request()->input('group_id'),
-                'album_id' => (int) request()->input('album_id'),
+            'title'       => (string) request()->input('title'),
+            'description' => (string) request()->input('description'),
+            'wallpost'    => (int) request()->input('wallpost'),
+            'group_id'    => (int) request()->input('group_id'),
+            'album_id'    => (int) request()->input('album_id'),
         ];
 
 
@@ -51,6 +53,7 @@ class UploadDelegator
      *
      * Главный метод для загрузки фотографий.
      * В $type указывается: на стену, в личные сообщения или же загрузка в альбом
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function uploadImage()
@@ -59,7 +62,7 @@ class UploadDelegator
         $files = request()->file('images');
         $vkIds = request()->input('vkId');
 
-        if ( !$files ) {
+        if ( ! $files) {
             return response()->json(['error' => 'Nothing']);
         }
 

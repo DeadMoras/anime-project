@@ -1,21 +1,9 @@
 <?php
 
-Route::group(['namespace' => 'User'], function() {
-    // Activate account code
-    Route::get('/activate/{code?}', 'Auth\ActivateController@activateAccount');
+// Activate
+Route::get('/activate/{code?}', 'ActivateController@activateAccount');
 
-    // Index
-    Route::get('/', 'Index\IndexController@getIndex');
-
-    // Statictic for vue
-    Route::get('/index-statistic', 'Index\IndexController@getStatisticInfo');
-
-    // Anime for vue
-    Route::get('/get-anime', 'Anime\AnimeController@getAnime');
-});
-
-//image controller
-Route::post('/save_image', 'ImageController@saveImage');
+Route::get('/', 'User\Index\IndexController@getIndex');
 
 // Upload service
 Route::get('/upload-service/token', '\App\UploadFiles\TokenService@getToken');
@@ -23,7 +11,9 @@ Route::post('/vk-save-video', '\App\UploadFiles\UploadDelegator@getUpload');
 Route::post('/vk-save-image', '\App\UploadFiles\UploadDelegator@uploadImage');
 
 // Logout
-Route::post('/logout', function() {
+Route::post(
+    '/logout', function () {
     \Auth::logout();
+
     return redirect('/');
 });

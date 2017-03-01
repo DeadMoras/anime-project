@@ -15,7 +15,7 @@ class Email extends Model
      * @param string $view
      * @param string $to
      * @param string $subject
-     * @param $data
+     * @param        $data
      *
      * Метод для создания новой записи в таблице 'emails'.
      * На выбор есть: view email или обычное письмо.

@@ -7,18 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 class Anime extends Model
 {
     protected $table = 'anime';
+
     /**
-     * @param int $id
+     * @param int  $id
      * @param bool $new
+     *
      * @return $this
      */
     public function newAnime(int $id = 0, bool $new = true)
     {
         $anime = null;
 
-        if ( true == $new ) {
+        if (true == $new) {
             $anime = new Anime;
-        } elseif ( false == $new ) {
+        } elseif (false == $new) {
             $anime = Anime::findOrFail($id);
         }
 
@@ -35,15 +37,19 @@ class Anime extends Model
     }
 
     /**
-     * Получение автора аниме
+     * Связь с юзером
      */
-    public function author() {
-        return $this->belongsTo('App\Models\User', 'user_entity_id', 'id');
+    public function author()
+    {
+        return $this->belongsTo('App\Models\User', 'user_entity_id');
     }
+
     /**
-     * Получение картинки аниме
+     * Связь для таблицы картинок
      */
-    public function imagesAnime () {
-        return $this->belongsTo('App\Models\Image', 'id', 'entity_id');
+    public function animeImage()
+    {
+        return $this->morphMany('App\Models\Image', 'entity', 'bundle')
+            ->where('status', 1);
     }
 }

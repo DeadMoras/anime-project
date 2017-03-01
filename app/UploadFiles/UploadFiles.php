@@ -13,24 +13,26 @@ class UploadFiles
 
     /**
      * UploadFiles constructor.
+     *
      * @param UploadInterface $upload
      *
      * Метод принимает класс который реализует интерфейс UploadInterface, создает объект и кладет в свойство выше
      */
-    public function __construct( UploadInterface $upload )
+    public function __construct(UploadInterface $upload)
     {
         $this->upload = $upload;
     }
 
     /**
-     * @param $file
+     * @param        $file
      * @param string $path
-     * @param array $data
+     * @param array  $data
+     *
      * @return mixed
      *
      * Главный метод интерфейса для загрузки видео
      */
-    public function upload( $file, string $path, array $data )
+    public function upload($file, string $path, array $data)
     {
         return $this->upload->uploadVideo((object) $file, (string) $path, (array) $data);
     }
@@ -38,7 +40,8 @@ class UploadFiles
     /**
      * @param object $files
      * @param string $method
-     * @param array $ids
+     * @param array  $ids
+     *
      * @return mixed
      *
      * Главный метод интерфейса для загрузки картинок

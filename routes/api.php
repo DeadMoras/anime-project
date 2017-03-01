@@ -1,10 +1,33 @@
 <?php
 
+Route::group(
+    ['namespace' => 'Api'], function () {
 
-// Auth events
-Route::post('/auth', 'Api\AuthApi@postAuth');
-Route::post('/register', 'Api\AuthApi@postRegister');
+    // Auth events
+    Route::group(
+        ['namespace' => 'Auth'], function () {
+        Route::post('/auth', 'Api@postAuth');
+        Route::post('/register', 'Api@postRegister');
+    });
 
-// Anime
-Route::get('anime/get ', 'Api\Anime\AnimeApi@getAnime');
-Route::get('set/likes ', 'Api\Likes\LikeController@setLike');
+    // Anime
+    Route::group(
+        ['namespace' => 'Anime'], function () {
+        Route::get('anime/get', 'AnimeApi@getAnime');
+    });
+
+    // Manga
+    Route::group(
+        ['namespace' => 'Manga'], function () {
+        Route::get('manga/statistic', 'MangaApi@getMangaStatistic');
+    });
+
+    // Likes
+    Route::group(
+        ['namespace' => 'Likes'], function () {
+        Route::get('likes/set', 'Likes\LikesApi@setLike');
+    });
+});
+
+//image controller
+Route::post('/save_image', 'ImageController@saveImage');

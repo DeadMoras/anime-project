@@ -8,13 +8,13 @@ class User extends Authenticatable
 {
     public function multiOptions($keys)
     {
-        if ( request()->input('action') == 'notConfirm' ) {
+        if (request()->input('action') == 'notConfirm') {
             User::whereIn('id', $keys)
                 ->update(['confirmed' => 0]);
-        } elseif ( request()->input('action') == 'confirm' ) {
+        } elseif (request()->input('action') == 'confirm') {
             User::whereIn('id', $keys)
                 ->update(['confirmed' => 1]);
-        } elseif ( request()->input('action') == 'delete' ) {
+        } elseif (request()->input('action') == 'delete') {
             User::whereIn('id', $keys)
                 ->delete();
         }
@@ -22,7 +22,7 @@ class User extends Authenticatable
 
     /**
      * @param array $data
-     * @param int $id
+     * @param int   $id
      */
     public function updateInfo(array $data, int $id)
     {
@@ -34,10 +34,31 @@ class User extends Authenticatable
 
         $user->save();
     }
+
     /**
-     * Получение картинки юзера
+     * Связь с опубликованными аниме
      */
-    public function imagesUser () {
-        return $this->belongsTo('App\Models\Image', 'id', 'entity_id');
+    public function anime()
+    {
+        return $this->hasMany('App\Models\Anime', 'user_entity_id', 'id');
+    }
+
+    /**
+     * Связь с картинками
+     */
+    public function userImage()
+    {
+        return $this->morphMany('App\Models\Image', 'entity', 'bundle')
+            ->where('status', 1);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     *
+     * Связь с информацией о юзере
+     */
+    public function userInfo()
+    {
+        return $this->hasOne('App\Models\UserInfo', 'entity_id', 'id');
     }
 }

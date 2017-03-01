@@ -11,6 +11,7 @@ class AnimeSeries extends Model
 
     /**
      * @param array $data
+     *
      * @return bool
      */
     public function deleteSeries(array $data): bool
@@ -24,7 +25,9 @@ class AnimeSeries extends Model
         }
 
         if (count($deleted)) {
-            DB::table('anime_series')->whereIn('id', $deleted)->delete();
+            DB::table('anime_series')
+                ->whereIn('id', $deleted)
+                ->delete();
         }
 
         return true;

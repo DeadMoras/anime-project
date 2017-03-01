@@ -12,7 +12,8 @@ class VkUpload implements UploadInterface
     /**
      * @param object $file
      * @param string $path
-     * @param array $data
+     * @param array  $data
+     *
      * @return mixed|void
      */
     public function uploadVideo($file, $path, $data)
@@ -32,8 +33,7 @@ class VkUpload implements UploadInterface
 
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS,
-                "file=" . $file);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, "file=".$file);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $data = curl_exec($ch);
@@ -54,6 +54,7 @@ class VkUpload implements UploadInterface
      * @param $url
      * @param $path
      * @param $token
+     *
      * @return \Illuminate\Http\JsonResponse
      *
      * Метод для загрузки видео
@@ -64,13 +65,14 @@ class VkUpload implements UploadInterface
         $client = new Client();
 
         // Отправяем видео
-        $response = $client->request('POST', $url, [
-                'multipart' => [
-                        [
-                                'name' => 'video_file',
-                                'contents' => fopen($path, 'r'),
-                        ],
+        $response = $client->request(
+            'POST', $url, [
+            'multipart' => [
+                [
+                    'name'     => 'video_file',
+                    'contents' => fopen($path, 'r'),
                 ],
+            ],
         ]);
 
         // Глобальный метод который удаляет видео с директории после его загрузки
@@ -80,8 +82,9 @@ class VkUpload implements UploadInterface
         (new ActivitySerivce)->newActivity($token->user_entity_id, $token->vk_user_id, $token->id);
 
         $data = [
-                'response' => $response->getBody()->getContents(),
-                'vk_user_id' => $token->vk_user_id
+            'response'   => $response->getBody()
+                ->getContents(),
+            'vk_user_id' => $token->vk_user_id,
         ];
 
         return response()->json(['success' => $data]);
@@ -91,6 +94,7 @@ class VkUpload implements UploadInterface
      * @param $images
      * @param $method
      * @param $ids
+     *
      * @return mixed
      */
     public function imagesUpload($images, $method, $ids)
@@ -101,6 +105,7 @@ class VkUpload implements UploadInterface
     /**
      * @param $images
      * @param $ids
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     private function albumUpload($images, $ids)
@@ -117,8 +122,7 @@ class VkUpload implements UploadInterface
 
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS,
-                "photos_list=image");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, "photos_list=image");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
         $data = curl_exec($ch);
@@ -127,7 +131,7 @@ class VkUpload implements UploadInterface
 
         $response = json_decode($data);
 
-        if ( !$response ) {
+        if ( ! $response) {
             return response()->json(['error' => 'Not access'], 406);
         }
 
@@ -143,6 +147,7 @@ class VkUpload implements UploadInterface
      * @param $response
      * @param $token
      * @param $images
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     private function uploadImageToAlbum($response, $token, $images)
@@ -165,37 +170,48 @@ class VkUpload implements UploadInterface
             // поэтому приходится писать так :)
             // Если файл сущестувует, то сохраняем и записываем ссылку в переменную
             foreach ($images as $k => $v) {
-                if (0 == $k) $file1 = $v->store('vk_images');
-                if (1 == $k) $file2 = $v->store('vk_images');
-                if (2 == $k) $file3 = $v->store('vk_images');
-                if (3 == $k) $file4 = $v->store('vk_images');
-                if (4 == $k) $file5 = $v->store('vk_images');
+                if (0 == $k) {
+                    $file1 = $v->store('vk_images');
+                }
+                if (1 == $k) {
+                    $file2 = $v->store('vk_images');
+                }
+                if (2 == $k) {
+                    $file3 = $v->store('vk_images');
+                }
+                if (3 == $k) {
+                    $file4 = $v->store('vk_images');
+                }
+                if (4 == $k) {
+                    $file5 = $v->store('vk_images');
+                }
             }
 
             // Отправляем запрос, чтобы вк загрузил картинки к себе на сервер
-            $vkResponse = $client->request('POST', $response->upload_url, [
-                    'multipart' => [
-                            [
-                                    'name' => 'file1',
-                                    'contents' => fopen($file1, 'r'),
-                            ],
-                            [
-                                    'name' => 'file2',
-                                    'contents' => fopen($file2, 'r'),
-                            ],
-                            [
-                                    'name' => 'file3',
-                                    'contents' => empty($file3) ? '' : fopen($file3, 'r'),
-                            ],
-                            [
-                                    'name' => 'file4',
-                                    'contents' => empty($file4) ? '' : fopen($file4, 'r'),
-                            ],
-                            [
-                                    'name' => 'file5',
-                                    'contents' => empty($file5) ? '' : fopen($file5, 'r'),
-                            ],
+            $vkResponse = $client->request(
+                'POST', $response->upload_url, [
+                'multipart' => [
+                    [
+                        'name'     => 'file1',
+                        'contents' => fopen($file1, 'r'),
                     ],
+                    [
+                        'name'     => 'file2',
+                        'contents' => fopen($file2, 'r'),
+                    ],
+                    [
+                        'name'     => 'file3',
+                        'contents' => empty($file3) ? '' : fopen($file3, 'r'),
+                    ],
+                    [
+                        'name'     => 'file4',
+                        'contents' => empty($file4) ? '' : fopen($file4, 'r'),
+                    ],
+                    [
+                        'name'     => 'file5',
+                        'contents' => empty($file5) ? '' : fopen($file5, 'r'),
+                    ],
+                ],
             ]);
 
             // Удаляем картинки из директории
@@ -204,17 +220,18 @@ class VkUpload implements UploadInterface
             // Сохраняем картинку в директорию
             $image = '';
 
-            foreach ( $images as $k => $v ) {
+            foreach ($images as $k => $v) {
                 $image = $v->store('vk_images');
             }
 
-            $vkResponse = $client->request('POST', $response->upload_url, [
-                    'multipart' => [
-                            [
-                                    'name' => 'file1',
-                                    'contents' => fopen($image, 'r'),
-                            ]
+            $vkResponse = $client->request(
+                'POST', $response->upload_url, [
+                'multipart' => [
+                    [
+                        'name'     => 'file1',
+                        'contents' => fopen($image, 'r'),
                     ],
+                ],
             ]);
 
             // Удаляем картинку с директории
@@ -222,27 +239,33 @@ class VkUpload implements UploadInterface
         }
 
         // Получаем нужные данные
-        $vkResponse = json_decode($vkResponse->getBody()->getContents());
+        $vkResponse = json_decode(
+            $vkResponse->getBody()
+                ->getContents());
 
         // Отправляем запрос, чтобы вк сохранил все фотографии
-        $imagesInVK = $client->request('POST', 'https://api.vk.com/method/photos.save?access_token=' . $token->token, [
-                'form_params' => [
-                        'photos_list' => stripslashes($vkResponse->photos_list),
-                        'hash' => $vkResponse->hash,
-                        'aid' => $vkResponse->aid,
-                        'server' => $vkResponse->server
-                ]
+        $imagesInVK = $client->request(
+            'POST', 'https://api.vk.com/method/photos.save?access_token='.$token->token, [
+            'form_params' => [
+                'photos_list' => stripslashes($vkResponse->photos_list),
+                'hash'        => $vkResponse->hash,
+                'aid'         => $vkResponse->aid,
+                'server'      => $vkResponse->server,
+            ],
         ]);
 
         // Метод, который записывает данные о запросе в базу данных.
         (new ActivitySerivce)->newActivity($token->user_entity_id, $token->vk_user_id, $token->id);
 
         // Сохраняем данные в базу данных
-        $dbInfo = $this->saveInfoAlbumImage(json_decode($imagesInVK->getBody()->getContents())->response);
+        $dbInfo = $this->saveInfoAlbumImage(
+            json_decode(
+                $imagesInVK->getBody()
+                    ->getContents())->response);
 
         $data = [
-                'response' => $dbInfo,
-                'vk_user_id' => $token->vk_user_id
+            'response'   => $dbInfo,
+            'vk_user_id' => $token->vk_user_id,
         ];
 
         return response()->json(['success' => $data], 200);
@@ -252,13 +275,14 @@ class VkUpload implements UploadInterface
      * @param $data
      *
      * Метод для сохранения данных о загруженной/загруженных картинки/картинок
+     *
      * @return VkImages
      */
     private function saveInfoAlbumImage($data)
     {
         $savedData = [];
 
-        foreach ( $data as $k => $v ) {
+        foreach ($data as $k => $v) {
             $table = new VkImages;
             $table->bundle = 'manga_tom';
             $table->height = $v->height;
@@ -268,8 +292,8 @@ class VkUpload implements UploadInterface
             $table->src = $v->src;
             $table->src_big = $v->src_big;
             $table->src_small = $v->src_small;
-            $table->src_xbig = !empty($v->src_xbig) ? $v->src_xbig : '';
-            $table->src_xxbig = !empty($v->src_xxbig) ? $v->src_xxbig : '';
+            $table->src_xbig = ! empty($v->src_xbig) ? $v->src_xbig : '';
+            $table->src_xxbig = ! empty($v->src_xxbig) ? $v->src_xxbig : '';
             $table->save();
 
             $savedData[$table->id]['id'] = $table->id;
@@ -282,8 +306,8 @@ class VkUpload implements UploadInterface
     private function serviceTableInfo()
     {
         return \DB::table('upload_service')
-                ->where('bundle', 'vk')
-                ->where('user_entity_id', \Auth::user()->id)
-                ->first();
+            ->where('bundle', 'vk')
+            ->where('user_entity_id', \Auth::user()->id)
+            ->first();
     }
 }

@@ -10,6 +10,7 @@ class UserInfo extends Model
 
     /**
      * @param int $entity_id
+     *
      * @return string
      *
      * Метод создает новую запись в базе данных.
@@ -27,18 +28,19 @@ class UserInfo extends Model
 
         $this->save();
 
-        return $this->login . $entity_id;
+        return $this->login.$entity_id;
     }
 
     /**
      * @param array $data
-     * @param int $id
+     * @param int   $id
      *
      * Метод для обновления данных пользователя
      */
     public function updateInfo(array $data, int $id)
     {
-        $user = UserInfo::where('entity_id', $id)->first();
+        $user = UserInfo::where('entity_id', $id)
+            ->first();
 
         $user->login = $data['login'];
         $user->vk = $data['vk'];
@@ -48,5 +50,15 @@ class UserInfo extends Model
         $user->sex = $data['sex'];
 
         $user->save();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     *
+     * Связь с юзером
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'id', 'entity_id');
     }
 }

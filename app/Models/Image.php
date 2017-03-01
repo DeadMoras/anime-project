@@ -12,19 +12,20 @@ class Image extends Model
     public $timestamps = false;
 
     /**
-     * @param bool $userAvatar для аватарки пользователя название формируется по другому
+     * @param bool   $userAvatar     для аватарки пользователя название формируется по другому
      * @param string $userNameAvatar логин пользователя для формирования аватарки
+     *
      * @return \Illuminate\Http\JsonResponse
      *
      * Главный метод для загрузки фотографий
      * Принимает только одну фотографию
      * В качестве объекта request использует глобальный метод request()
      */
-    public function uploadImage( bool $userAvatar = false, string $userNameAvatar = '' )
+    public function uploadImage(bool $userAvatar = false, string $userNameAvatar = '')
     {
         // Переменная для ответа на запрос
         $data = [
-                'error' => true,
+            'error' => true,
         ];
 
         // хайден поля, можно свободно изменять высоту, ширину и папку, куда будет сохраняться картинка
@@ -33,8 +34,8 @@ class Image extends Model
         $height = request()->input('image_height');
 
         // Проверка на существование файла. Название картинки всего должно быть 'image'
-        if ( request()->hasFile('image') ) {
-            foreach(request()->file('image') as $key => $value) {
+        if (request()->hasFile('image')) {
+            foreach (request()->file('image') as $key => $value) {
                 $image = $value;
 
                 // Формат картинки
@@ -42,26 +43,26 @@ class Image extends Model
 
                 // Название картинки, если аватарка для пользователя - вызываем другой метод
                 $imageName = (string) '';
-                if ( true === $userAvatar ) {
+                if (true === $userAvatar) {
                     $imageName = $this->userAvatarName($userNameAvatar);
                 } else {
                     // str2urlImage = метод, который подготавливает название для записи в базу данных
                     $imageName = strOther($image->getClientOriginalName(), 'image');
 
                     // Название картинки для базы данных
-                    $imagePath = $imageName . time() . '.' . $imageMimiType[1];
+                    $imagePath = $imageName.time().'.'.$imageMimiType[1];
 
                     // Сохраняем файл в директорию
                     LImage::make($image->getRealPath())
-                            ->resize($width, $height)
-                            ->save(public_path('images/' . $path . '/' . $imagePath));
+                        ->resize($width, $height)
+                        ->save(public_path('images/'.$path.'/'.$imagePath));
 
                     // Информация для базы данных
                     $dbData = [
-                            'name' => $imagePath,
-                            'bundle' => request()->input('image_bundle'),
-                            'size' => $image->getSize(),
-                            'mimiType' => $image->getMimeType(),
+                        'name'     => $imagePath,
+                        'bundle'   => request()->input('image_bundle'),
+                        'size'     => $image->getSize(),
+                        'mimiType' => $image->getMimeType(),
                     ];
 
                     // Сохраняем запись о картинке в базу данных
@@ -72,8 +73,8 @@ class Image extends Model
             }
         }
 
-        foreach ( $data['image'] as $k => $v ) {
-            $v['name'] = '/images/' . $path . '/' . $v['name'];
+        foreach ($data['image'] as $k => $v) {
+            $v['name'] = '/images/'.$path.'/'.$v['name'];
         }
 
         return $data;
@@ -81,6 +82,7 @@ class Image extends Model
 
     /**
      * @param string $userNameAvatar
+     *
      * @return string
      *
      * Метод который генерирует название фотографии если работа с аватаркой пользователя
@@ -88,7 +90,7 @@ class Image extends Model
      * Название формируется с учетом: логина пользователя и его айди
      * @internal param string $userLogin
      */
-    private function userAvatarName( string $userNameAvatar ): string
+    private function userAvatarName(string $userNameAvatar): string
     {
         // Метод для удаления ранее загруженной аватарки
         $this->userRenameImage($userNameAvatar);
@@ -98,19 +100,20 @@ class Image extends Model
 
     /**
      * @param string $userNameAvatar
+     *
      * @internal param string $userLogin
      *
      * Метод для удаления ранее загруженной аватарки пользователя
      */
-    public function userRenameImage( string $userNameAvatar )
+    public function userRenameImage(string $userNameAvatar)
     {
         // Ищем аватарку пользователя по bundle и name
         // В name - логин и айди пользователя
         $image = MImage::where('bundle', 'users')
-                ->where('name', $userNameAvatar)
-                ->first();
+            ->where('name', $userNameAvatar)
+            ->first();
 
-        if ( null != $image || false != $image ) {
+        if (null != $image || false != $image) {
             $image->name = $userNameAvatar;
             $image->save();
         }
@@ -118,11 +121,12 @@ class Image extends Model
 
     /**
      * @param array $data
+     *
      * @return bool
      *
      * Метод для сохранения информации о картинке в базу данных
      */
-    private function saveImageDataBase( array $data )
+    private function saveImageDataBase(array $data)
     {
         $image = new MImage;
 
@@ -138,15 +142,16 @@ class Image extends Model
     }
 
     /**
-     * @param int $id
+     * @param int    $id
      * @param string $name
      *
      * Метод для удаления записи из базы данных
      * @param string $dir
      */
-    public function deleteImage( int $id, string $name, string $dir )
+    public function deleteImage(int $id, string $name, string $dir)
     {
-        Image::where('id', $id)->delete();
+        Image::where('id', $id)
+            ->delete();
         $this->deleteImageFromDir($name, $dir);
     }
 
@@ -154,9 +159,9 @@ class Image extends Model
      * @param string $name
      * @param string $dir
      */
-    public function deleteImageFromDir( string $name, string $dir ): void
+    public function deleteImageFromDir(string $name, string $dir): void
     {
-        Storage::delete('images/' . $dir . '/' . $name);
+        Storage::delete('images/'.$dir.'/'.$name);
     }
 
     /**
@@ -167,26 +172,26 @@ class Image extends Model
      * @param string $newName
      * @param string $dir
      */
-    public function renameAvatarDir( string $oldName, string $newName, string $dir ): void
+    public function renameAvatarDir(string $oldName, string $newName, string $dir): void
     {
-        Storage::move('images/' . $dir . '/' . $oldName, 'images/' . $dir . '/' . $newName);
+        Storage::move('images/'.$dir.'/'.$oldName, 'images/'.$dir.'/'.$newName);
     }
 
     /**
      * @param string $name
-     * @param int $imageId
-     * @param bool $entityBool
-     * @param int $entityId
+     * @param int    $imageId
+     * @param bool   $entityBool
+     * @param int    $entityId
      *
      * Метод для изменения название картинки.
      * Если $user = true, то в entity_id попадет еще и айди пользователя. Связанно это с тем, что для загрузки аватарки
      * используется другая логика, чем для других картинок.
      */
-    public function renameAvatar( string $name, int $imageId, bool $entityBool = false, int $entityId = 0 ): void
+    public function renameAvatar(string $name, int $imageId, bool $entityBool = false, int $entityId = 0): void
     {
         $image = Image::findOrFail($imageId);
 
-        if ( $entityBool == true ) {
+        if ($entityBool == true) {
             $image->entity_id = $entityId;
         }
 
@@ -200,21 +205,28 @@ class Image extends Model
      * Метод для создания записи в случае, если пользователь не загрузил аватарку.
      *
      * Может использоваться в любых случаях.
+     *
      * @param string $bundle
-     * @param bool $user
+     * @param bool   $user
+     *
      * @return $this
      */
-    public function createNewDefaultImage( string $bundle, $user = false )
+    public function createNewDefaultImage(string $bundle, $user = false)
     {
-        if ( true == $user ) {
+        if (true == $user) {
             $this->name = 'default.jpg';
         } else {
-            $this->name = $bundle . time();
+            $this->name = $bundle.time();
         }
 
         $this->bundle = $bundle;
         $this->save();
 
         return $this;
+    }
+
+    public function image()
+    {
+        return $this->morphTo();
     }
 }

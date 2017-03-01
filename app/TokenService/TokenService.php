@@ -10,6 +10,7 @@ class TokenService
 
     /**
      * TokenService constructor.
+     *
      * @param TokenInterface $object
      */
     public function __construct(TokenInterface $object)
@@ -26,7 +27,7 @@ class TokenService
 
     /**
      * @param string $token
-     * @param int $id
+     * @param int    $id
      */
     public function checkToken(string $token, int $id)
     {
@@ -35,7 +36,7 @@ class TokenService
 
     /**
      * @param string $token
-     * @param int $id
+     * @param int    $id
      */
     public function saveToken(string $token, int $id)
     {
@@ -44,6 +45,7 @@ class TokenService
 
     /**
      * @param array $data
+     *
      * @return
      */
     public function getAuth(array $data)
