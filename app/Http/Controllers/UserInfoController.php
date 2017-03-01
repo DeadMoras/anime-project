@@ -18,9 +18,9 @@ class UserInfoController extends Controller
     {
         $this->userId = \Auth::user()->id;
 
-        if ( $this->object == null ) {
+        if ($this->object == null) {
             $this->object = UserInfo::where('entity_id', $this->userId)
-                                    ->first();
+                ->first();
         }
 
         return $this->object;
@@ -124,7 +124,7 @@ class UserInfoController extends Controller
     public function getAvatar()
     {
         return Image::select('name')
-                    ->where('entity_id', $this->userId)
-                    ->first()['name'];
+                   ->where('entity_id', $this->userId)
+                   ->first()['name'];
     }
 }

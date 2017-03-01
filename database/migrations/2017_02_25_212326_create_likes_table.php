@@ -18,7 +18,6 @@ class CreateLikesTable extends Migration
             $table->integer('user_entity_id');
             $table->integer('post_entity_id');
             $table->string('bundle');
-            $table->integer('count');
         });
     }
 
