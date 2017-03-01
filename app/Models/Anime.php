@@ -38,6 +38,12 @@ class Anime extends Model
      * Получение автора аниме
      */
     public function author() {
-        return $this->belongsTo('App\Models\User', 'id', 'user_entity_id');
+        return $this->belongsTo('App\Models\User', 'user_entity_id', 'id');
+    }
+    /**
+     * Получение картинки аниме
+     */
+    public function imagesAnime () {
+        return $this->belongsTo('App\Models\Image', 'id', 'entity_id');
     }
 }

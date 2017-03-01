@@ -34,4 +34,10 @@ class User extends Authenticatable
 
         $user->save();
     }
+    /**
+     * Получение картинки юзера
+     */
+    public function imagesUser () {
+        return $this->belongsTo('App\Models\Image', 'id', 'entity_id');
+    }
 }
