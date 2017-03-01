@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Anime extends Model
 {
     protected $table = 'anime';
-
     /**
      * @param int $id
      * @param bool $new
@@ -33,5 +32,12 @@ class Anime extends Model
         $anime->save();
 
         return $anime;
+    }
+
+    /**
+     * Получение автора аниме
+     */
+    public function author() {
+        return $this->belongsTo('App\Models\User', 'id', 'user_entity_id');
     }
 }
