@@ -23,19 +23,18 @@ class Token implements TokenInterface
     /**
      * @param string $token
      * @param int $id
-     * @return bool
-     * @throws Exception
+     * @return array|bool
      */
-    public function checkToken(string $token, int $id): bool
+    public function checkToken(string $token, int $id)
     {
         if ( 1 > count($id) ) {
-            throw new Exception('Where is id...');
+            return ['error' => 'Where is id...'];
         }
 
         $user = User::findOrFail($id);
 
         if ( !$user ) {
-            throw new Exception('Incorrect id');
+            return ['error' => 'Incorrect id'];
         }
 
         if ( $user->remember_token != $token ) {
@@ -48,17 +47,16 @@ class Token implements TokenInterface
     /**
      * @param string $token
      * @param int $id
-     * @return bool
-     * @throws Exception
+     * @return array|bool
      */
-    public function saveToken(string $token = '', int $id): bool
+    public function saveToken(string $token = '', int $id)
     {
         // Токен
         $saveToken = null;
 
         if ( 9 > strlen($token) ) {
             if ( !count($this->token) ) {
-                throw new Exception('Нету токена');
+                return ['error' => 'not tocken'];
             }
 
             $saveToken = $this->token;
