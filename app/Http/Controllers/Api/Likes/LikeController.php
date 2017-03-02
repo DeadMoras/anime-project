@@ -14,40 +14,45 @@ class LikeController extends Controller
 {
     public function setLike (Request $request)
     {
-        $token = new TokenService(new Token())->checkToken($request->access_tocken, $request->userId);
+        $error = new Errors();
+        $service = new TokenService(new Token());
+        $token = $service->checkToken($request->access_tocken, $request->userId);
         if ($token) {
-            $ckeckLikes = Likes::where(
+            $ckeckLikes = Likes::where([
                 ['user_entity_id', '=' , $request->userId],
-                ['post_entity_id', '=' , $request->postId],
+                ['post_entity_id', '=' , $request->userId],
                 ['bundle', '=' , $request->bundle]
-            )->first();
+            ])->first();
             if ($ckeckLikes === null) {
                 $insert = Likes::insert([
-                    'user_entity_id', '=' , $request->userId,
-                    'post_entity_id', '=' , $request->postId,
-                    'bundle', '=' , $request->bundle
+                    'user_entity_id' => $request->userId,
+                    'post_entity_id'  =>  $request->postId,
+                    'bundle'  =>    $request->bundle
                 ]);
 
                 switch ($request->bundle) {
                     case 'anime':
                         Anime::increment('likes');
-                        return response()->json(['likes add'], 200);
+                        return response()->json(
+                            $error->addObject('response', 'like is add')
+                                    ->getResponse(), 200
+                        );
                     break;
                 }
             } else {
                 return response()->json(
-                    new Errors()->changeErrorTrue()
-                                ->addObject('error_code', 406)
-                                ->addObject('error_data', 'likes has updated')
-                                ->getResponse()
+                    $error->changeErrorTrue()
+                            ->addObject('error_code', 406)
+                            ->addObject('error_data', 'likes has updated')
+                            ->getResponse()
                 );
             }
         }
         return response()->json(
-            new Errors()->changeErrorTrue()
-                        ->addObject('error_code', 500)
-                        ->addObject('error_data', 'likes has updated')
-                        ->getResponse()
+            $error->changeErrorTrue()
+                    ->addObject('error_code', 401)
+                    ->addObject('error_data', 'unAuth')
+                    ->getResponse()
         );
     }
 }
