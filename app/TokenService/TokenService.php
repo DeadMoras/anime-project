@@ -37,7 +37,7 @@ class TokenService
      * @param string $token
      * @param int $id
      */
-    public function saveToken(string $token, int $id)
+    public function saveToken(string $token, int $id = 0)
     {
         return $this->object->saveToken($token, $id);
     }

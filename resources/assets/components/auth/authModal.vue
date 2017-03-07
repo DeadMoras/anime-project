@@ -22,7 +22,7 @@
 
 <script>
     import axios from 'axios';
-    import { getToken, saveToken } from '../modules/token';
+    import { getToken, saveToken } from '../../modules/token.js';
 
     export default {
         data() {

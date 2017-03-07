@@ -25,7 +25,7 @@
 </template>
 
 <script>
-    import authModal from '../authModal.vue';
+    import authModal from '../../components/auth/authModal.vue';
     import store from '../../store/store.js';
     import { mapState } from 'vuex';
 

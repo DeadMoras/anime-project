@@ -1,1 +1,0 @@
-<auth-modal></auth-modal>

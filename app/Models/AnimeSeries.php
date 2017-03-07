@@ -29,4 +29,9 @@ class AnimeSeries extends Model
 
         return true;
     }
+
+    public function anime()
+    {
+        return $this->belongsTo('App\Models\Anime', 'entity_id');
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\TokenService\Components;
 
+use App\Http\ApiErrors\Errors;
 use App\Models\User;
 use App\TokenService\Auth\AuthComponent;
 use App\TokenService\Interfaces\TokenInterface;
@@ -22,24 +23,26 @@ class Token implements TokenInterface
 
     /**
      * @param string $token
-     * @param int $id
-     * @return bool
-     * @throws Exception
+     * @param int    $id
+     *
+     * @return array|bool
      */
-    public function checkToken(string $token, int $id): bool
+    public function checkToken(string $token, int $id = 0)
     {
-        if ( 1 > count($id) ) {
-            throw new Exception('Where is id...');
+        $user = null;
+
+        if (0 == $id) {
+            $user = User::where('remember_token', $token)->first();
+        } else {
+            $user = User::findOrFail($id);
         }
 
-        $user = User::findOrFail($id);
-
-        if ( !$user ) {
-            throw new Exception('Incorrect id');
+        if ( ! $user) {
+            return ['error' => 'Incorrect id or token'];
         }
 
-        if ( $user->remember_token != $token ) {
-            return false;
+        if ($user->remember_token != $token) {
+            return ['error' => 'You are not logged in'];
         } else {
             return true;
         }
@@ -47,18 +50,18 @@ class Token implements TokenInterface
 
     /**
      * @param string $token
-     * @param int $id
-     * @return bool
-     * @throws Exception
+     * @param int    $id
+     *
+     * @return array|bool
      */
-    public function saveToken(string $token = '', int $id): bool
+    public function saveToken(string $token = '', int $id)
     {
         // Токен
         $saveToken = null;
 
-        if ( 9 > strlen($token) ) {
-            if ( !count($this->token) ) {
-                throw new Exception('Нету токена');
+        if (9 > strlen($token)) {
+            if ( ! count($this->token)) {
+                return ['error' => 'not tocken'];
             }
 
             $saveToken = $this->token;
@@ -75,6 +78,7 @@ class Token implements TokenInterface
 
     /**
      * @param array $data
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function getAuth(array $data)

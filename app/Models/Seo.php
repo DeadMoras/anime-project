@@ -68,4 +68,12 @@ class Seo extends Model
 
         return $data;
     }
+
+    /**
+     *
+     */
+    public function seo()
+    {
+        return $this->morphTo();
+    }
 }

@@ -23,7 +23,7 @@
                 h5.center-align Обновления манги
             ul.collection
                 li(v-for='manga in lastManga').collection-item.avatar
-                    img(:src="'/images/manga/'+manga.image").circle
+                    img(:src="manga.manga_preview").circle
                     span.title {{ manga.name }}
                     a(href='#!').secondary-content
                         i.fa.fa-user-circle
@@ -42,10 +42,10 @@
         },
         mounted() {
             let self = this;
-            axios.get('/index-statistic').then(function (response) {
-                self.lastUsers = response.data.users;
-                self.lastManga = response.data.manga;
+            axios.get('/api/manga/statistic').then(function (response) {
+                self.lastManga = response.data.response;
             }).catch(function (error) {
+                console.log(error);
             });
         },
     }

@@ -21,21 +21,28 @@
             li.divider
             li
                 a(href='#') three
-        div(v-if="store.state.userStore.user != false")
+        div(v-if="user != false")
             a(href="#", data-activates="dropdown1").dropdown-button
                 div.col.s3.m3.l4.right-header_profile
-                    img(:src="'images/user/'+ store.state.userStore.user.avatar")
-                    span store.state.userStore.user.login
+                    img(:src="user.avatar")
+                    span {{ user.login }}
 </template>
 
 <script>
     import store from '../../store/store.js';
+    import { mapState } from 'vuex';
 
     export default {
         data() {
             return {
-                store: store
             }
-        }
+        },
+        computed: {
+            ...mapState(
+                {
+                    user: state => state.userStore.user
+                }
+            )
+        },
     }
 </script>

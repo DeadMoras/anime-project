@@ -22,7 +22,6 @@ class CreateAnimeTable extends Migration
             $table->integer('user_entity_id');
             $table->string('year');
             $table->string('age');
-            $table->integer('same_entity_id')->nullable();
             $table->timestamps();
         });
     }

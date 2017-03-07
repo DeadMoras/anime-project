@@ -76,9 +76,9 @@
 
 <script>
     import Vue from 'vue';
-    import { justLength } from '../modules/validate.js';
-    import { uploadImage } from '../modules/uploadImage.js';
-    import { removeImage } from '../modules/uploadImage.js';
+    import { justLength } from '../../modules/validate.js';
+    import { uploadImage } from '../../modules/uploadImage.js';
+    import { removeImage } from '../../modules/uploadImage.js';
     import axios from 'axios';
 
     Vue.component('social-icon', {
