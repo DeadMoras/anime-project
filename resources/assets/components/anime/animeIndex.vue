@@ -31,9 +31,8 @@
                             span(v-else)
                                 i.fa.fa-heart-o.left
                             span {{ a.likes }}
-                        <router-link :to="a.anime_link">
+                        router-link(:to="a.anime_link")
                             i.fa.fa-arrow-circle-right.right
-                        </router-link>
 
             div.col.s12.m12.l3.right-sidebar
                 div.col.s12.m12.l12.right-block
@@ -59,7 +58,6 @@
     import indexBlockInfo from '../../components/indexBlockInfo.vue';
     import {mapState, mapActions} from 'vuex';
     import {likePost} from '../../modules/like.js';
-    import {showAlert} from '../../modules/alerts.js';
 
     export default {
         components: {
@@ -90,11 +88,11 @@
                     'changeInfo'
                 ]
             ),
-            likePost(id) {
-                let liked = likePost(id, 'anime', this.user.id);
+            async likePost(id) {
+                let liked = await likePost(id, 'anime', this.user.id);
 
                 if (true == liked) {
-                    showAlert('success-js_button--success', 'Вы успешно оценили запись', 'fa-check')
+                    alertify.notify('Вы успешно оценили запись', 'success', 3);
                     for (let k in this.anime) {
                         if (this.anime[k].anime_id == id) {
                             this.anime[k].likes++;
@@ -122,13 +120,19 @@
             );
 
             // best anime
-            axios.get('/api/anime/best', {
-                responseType: 'json'
-            }).then((response) => {
-                this.bestAnime = response.data.response;
-            }).catch((error) => {
-                console.log(error.respons.data.error_data)
-            });
+            axios.get(
+                '/api/anime/best', {
+                    responseType: 'json'
+                }
+            ).then(
+                (response) => {
+                    this.bestAnime = response.data.response;
+                }
+            ).catch(
+                (error) => {
+                    console.log(error.respons.data.error_data)
+                }
+            );
         },
     }
 </script>

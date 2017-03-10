@@ -10,9 +10,11 @@ class CommentsMain
      * @param string $modelName
      * @param string $title - seo title, because we need know entity_id from this table
      *
+     * @param        $skip
+     *
      * @return array
      */
-    public function getComments(string $modelName, string $title)
+    public function getComments(string $modelName, string $title, $skip)
     {
         $animeId = $this->entityIdFromSeo($title);
 
@@ -29,7 +31,8 @@ class CommentsMain
                 'user.userImage',
             ])
             ->where('post_entity_id', $animeId)
-            ->take(20)
+            ->skip($skip)
+            ->take(10)
             ->get();
 
         if ( ! $data) {

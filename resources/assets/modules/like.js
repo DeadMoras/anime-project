@@ -1,13 +1,12 @@
 import {checkToken, getToken} from './token.js';
 import axios from 'axios';
-import {showAlert} from './alerts.js';
-var Promise = require('bluebird');
+let Promise = require('bluebird');
 
 export function likePost(post_id, bundle, user_id) {
     return new Promise(
         function (resolve, reject) {
             if (!user_id) {
-                showAlert('success-js_button--error', 'Вы должны авторизоваться', 'fa-times')
+                alertify.notify('Вы должны авторизоваться', 'error', 3)
                 return false;
             }
 
@@ -16,7 +15,7 @@ export function likePost(post_id, bundle, user_id) {
             }
 
             if (!checkToken()) {
-                showAlert('success-js_button--error', 'Вы должны авторизоваться', 'fa-times')
+                alertify.notify('Вы должны авторизоваться', 'error', 3)
                 return false;
             }
 
@@ -39,10 +38,10 @@ export function likePost(post_id, bundle, user_id) {
                 (error) => {
                     if (423 == error.response.status) {
                         for (let k in error.response.data.error_data) {
-                            showAlert('success-js_button--error', error.response.data.error_data[k], 'fa-times');
+                            alertify.notify(error.response.data.error_data[k], 'error', 2);
                         }
                     } else {
-                        showAlert('success-js_button--error', error.response.data.error_data, 'fa-times');
+                        alertify.notify(error.response.data.error_data, 'error', 3);
                     }
                 }
             );

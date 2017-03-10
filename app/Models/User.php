@@ -63,9 +63,18 @@ class User extends Authenticatable
     }
 
     /**
+     * Связь с комментариями которые являются рецензиями
+     */
+    public function commentsReviews()
+    {
+        return $this->hasMany('App\Models\AnimeComment', 'user_entity_id', 'id')
+            ->where('review', 1);
+    }
+
+    /**
      * Связь для репутации
      */
-    public function reputation()
+    public function tableReputation()
     {
         return $this->hasMany('App\Models\Reputation', 'for_entity_id', 'id');
     }

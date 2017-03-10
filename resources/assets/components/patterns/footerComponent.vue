@@ -27,21 +27,21 @@
 <script>
     import authModal from '../../components/auth/authModal.vue';
     import store from '../../store/store.js';
-    import { mapState } from 'vuex';
+    import {mapState} from 'vuex';
 
     export default {
         components: {
             authModal
         },
         data() {
-            return {
-
-            }
+            return {}
         },
         computed: {
-            ...mapState({
-                user: state => state.userStore.user
-            })
+            ...mapState(
+                {
+                    user: state => state.userStore.user
+                }
+            )
         }
     }
 </script>

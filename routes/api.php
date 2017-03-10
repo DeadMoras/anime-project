@@ -38,7 +38,9 @@ Route::group(
 
     Route::group(
         ['namespace' => 'Users'], function () {
+        Route::get('/user/profile/{id}/{userId?}', 'UserApi@getProfileUser');
         Route::post('/user/get', 'UserApi@getInfoUser');
+        Route::post('/user/add-to-list', 'UserListApi@newToList');
     });
 });
 

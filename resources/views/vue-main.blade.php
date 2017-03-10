@@ -23,6 +23,7 @@
         </footer>
     </div>
 
+    <script src="//cdn.jsdelivr.net/alertifyjs/1.9.0/alertify.min.js"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{ asset('/bower_components/jquery/dist/jquery.js') }}"></script>
     <script src="{{ asset('/bower_components/materialize/dist/js/materialize.js') }}"></script>

@@ -14,73 +14,73 @@ function generateKey($length = 10, $charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefg
 function rus2translit($string)
 {
     $converter = [
-            'а' => 'a',
-            'б' => 'b',
-            'в' => 'v',
-            'г' => 'g',
-            'д' => 'd',
-            'е' => 'e',
-            'ё' => 'e',
-            'ж' => 'zh',
-            'з' => 'z',
-            'и' => 'i',
-            'й' => 'y',
-            'к' => 'k',
-            'л' => 'l',
-            'м' => 'm',
-            'н' => 'n',
-            'о' => 'o',
-            'п' => 'p',
-            'р' => 'r',
-            'с' => 's',
-            'т' => 't',
-            'у' => 'u',
-            'ф' => 'f',
-            'х' => 'h',
-            'ц' => 'c',
-            'ч' => 'ch',
-            'ш' => 'sh',
-            'щ' => 'sch',
-            'ь' => '\'',
-            'ы' => 'y',
-            'ъ' => '\'',
-            'э' => 'e',
-            'ю' => 'yu',
-            'я' => 'ya',
+        'а' => 'a',
+        'б' => 'b',
+        'в' => 'v',
+        'г' => 'g',
+        'д' => 'd',
+        'е' => 'e',
+        'ё' => 'e',
+        'ж' => 'zh',
+        'з' => 'z',
+        'и' => 'i',
+        'й' => 'y',
+        'к' => 'k',
+        'л' => 'l',
+        'м' => 'm',
+        'н' => 'n',
+        'о' => 'o',
+        'п' => 'p',
+        'р' => 'r',
+        'с' => 's',
+        'т' => 't',
+        'у' => 'u',
+        'ф' => 'f',
+        'х' => 'h',
+        'ц' => 'c',
+        'ч' => 'ch',
+        'ш' => 'sh',
+        'щ' => 'sch',
+        'ь' => '\'',
+        'ы' => 'y',
+        'ъ' => '\'',
+        'э' => 'e',
+        'ю' => 'yu',
+        'я' => 'ya',
 
-            'А' => 'A',
-            'Б' => 'B',
-            'В' => 'V',
-            'Г' => 'G',
-            'Д' => 'D',
-            'Е' => 'E',
-            'Ё' => 'E',
-            'Ж' => 'Zh',
-            'З' => 'Z',
-            'И' => 'I',
-            'Й' => 'Y',
-            'К' => 'K',
-            'Л' => 'L',
-            'М' => 'M',
-            'Н' => 'N',
-            'О' => 'O',
-            'П' => 'P',
-            'Р' => 'R',
-            'С' => 'S',
-            'Т' => 'T',
-            'У' => 'U',
-            'Ф' => 'F',
-            'Х' => 'H',
-            'Ц' => 'C',
-            'Ч' => 'Ch',
-            'Ш' => 'Sh',
-            'Щ' => 'Sch',
-            'Ь' => '\'',
-            'Ы' => 'Y',
-            'Ъ' => '\'',
-            'Э' => 'E',
-            'Ю' => 'Yu',
-            'Я' => 'Ya',
+        'А' => 'A',
+        'Б' => 'B',
+        'В' => 'V',
+        'Г' => 'G',
+        'Д' => 'D',
+        'Е' => 'E',
+        'Ё' => 'E',
+        'Ж' => 'Zh',
+        'З' => 'Z',
+        'И' => 'I',
+        'Й' => 'Y',
+        'К' => 'K',
+        'Л' => 'L',
+        'М' => 'M',
+        'Н' => 'N',
+        'О' => 'O',
+        'П' => 'P',
+        'Р' => 'R',
+        'С' => 'S',
+        'Т' => 'T',
+        'У' => 'U',
+        'Ф' => 'F',
+        'Х' => 'H',
+        'Ц' => 'C',
+        'Ч' => 'Ch',
+        'Ш' => 'Sh',
+        'Щ' => 'Sch',
+        'Ь' => '\'',
+        'Ы' => 'Y',
+        'Ъ' => '\'',
+        'Э' => 'E',
+        'Ю' => 'Yu',
+        'Я' => 'Ya',
     ];
 
     return strtr($string, $converter);
@@ -96,9 +96,9 @@ function strOther($str, $type)
 
     $str = trim($str, "-");
 
-    if ( $type == 'image' ) {
+    if ($type == 'image') {
         $newStr = checkStrImage($str);
-    } elseif ( $type == 'seo' ) {
+    } elseif ($type == 'seo') {
         $newStr = checkStr($str);
     } else {
         $newStr = $str;
@@ -110,7 +110,7 @@ function strOther($str, $type)
 function checkStr($str)
 {
     $data = \App\Models\Seo::pluck('path', 'id')
-            ->toArray();
+        ->toArray();
 
     $path = $str;
 
@@ -118,7 +118,7 @@ function checkStr($str)
         if (in_array($path, $data)) {
             for ($i = 0; $i < 100; $i++) {
                 $path = "{$str}-{$i}";
-                if (!in_array($path, $data)) {
+                if ( ! in_array($path, $data)) {
                     break;
                 }
             }
@@ -131,7 +131,7 @@ function checkStr($str)
 function checkStrImage($str)
 {
     $data = \App\Models\Image::pluck('name', 'id')
-            ->toArray();
+        ->toArray();
 
     $path = $str;
 
@@ -139,7 +139,7 @@ function checkStrImage($str)
         if (in_array($path, $data)) {
             for ($i = 0; $i < 100; $i++) {
                 $path = "{$str}-{$i}";
-                if (!in_array($path, $data)) {
+                if ( ! in_array($path, $data)) {
                     break;
                 }
             }
@@ -149,11 +149,6 @@ function checkStrImage($str)
     return $path;
 }
 
-function userInfo($method)
-{
-    return (new \App\Http\Controllers\UserInfoController)->{$method}();
-}
-
 function deleteVideoFromStorage($path)
 {
     \Illuminate\Support\Facades\Storage::delete($path);
@@ -161,11 +156,20 @@ function deleteVideoFromStorage($path)
 
 function deleteVkImageFromDir($images)
 {
-    if ( is_array($images) ) {
-        foreach ( $images as $k => $v ) {
+    if (is_array($images)) {
+        foreach ($images as $k => $v) {
             \Illuminate\Support\Facades\Storage::delete($v);
         }
     } else {
         \Illuminate\Support\Facades\Storage::delete($images);
+    }
+}
+
+function checkCorrectValues($type, $values)
+{
+    foreach ($values as $k) {
+        if ($k == $type) {
+            return true;
+        }
     }
 }

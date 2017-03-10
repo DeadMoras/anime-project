@@ -26,9 +26,9 @@ class CommentsApi extends Controller
 
         $title = $request->input('seo_title');
 
-        $comments = (new CommentsMain)->getComments('AnimeComment', $title);
+        $comments = (new CommentsMain)->getComments('AnimeComment', $title, $request->input('skip_pagination'));
 
-        if ('error' == $comments[0]) {
+        if ('error' == array_keys($comments)) {
             return response()->json(
                 $error->changeErrorTrue()
                     ->addObject('error_code', 406)
@@ -36,11 +36,24 @@ class CommentsApi extends Controller
                     ->getResponse(), 406);
         }
 
+        if ( ! count($comments)) {
+            return response()->json(
+                $error->changeErrorTrue()
+                    ->addObject('error_code', 405)
+                    ->addObject('error_data', 'Больше нету комментариев')
+                    ->getResponse(), 405);
+        }
+
         return response()->json(
             $error->addObject('response', $comments)
                 ->getResponse(), 200);
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function addComment(Request $request)
     {
         $error = new Errors;

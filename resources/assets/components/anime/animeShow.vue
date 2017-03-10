@@ -40,7 +40,7 @@
                     :class="page.active == true ? 'active' : ''")
                     | {{ index }}
             div.col.s12.m12.l2.buttons-to_anime
-                <icons-profile></icons-profile>
+                icons-profile(:postId="anime.id")
 
         div.row.main-container
 
@@ -48,7 +48,7 @@
                 div(v-if="videoSrc").row.col.s12.m12.l12.video-player
                     iframe(:src="videoSrc" frameborder="0" scrolling="no" allowfullscreen, width="600" height="500")
 
-                <comments></comments>
+                comments
 
             div.col.s12.m12.l3.right-sidebar.watch-anime_right
                 div.col.s12.m12.l12.right-block

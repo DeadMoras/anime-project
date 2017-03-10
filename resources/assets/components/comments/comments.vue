@@ -14,7 +14,7 @@
                     a(@click="addComment").waves-effect.waves-light.btn.col.s6.m6.l6 Добавить
             div.row.col.s12.m12.l12.comments
                 ul.row.col.s12.m12.l12
-                    div(v-if="0 != newComments.length")
+                    div(v-if="0 != newComments.length" @click="showNewComments").new-comments_sockets
                         span Новые комментарии {{ newComments.length }}
                     li(v-for="comment in comments",
                        :class="user.id == comment.answer_comment_user ? 'answer-to_user' : ''").row.col.s12.m12.l12
@@ -24,9 +24,11 @@
                               @click="replyToComment(comment.comment_id, comment.user.id, comment.user.login)",
                               class="waves-effect waves-light btn col s12 m12 l12") Ответить
                         div.row.col.s12.m12.l9.comment-container
-                            a(href="#") {{comment.user.login}}
+                            router-link(:to="'/user/id/' + comment.user.id") {{comment.user.login}}
                             div.row.col.s12.m12.l12
                                 p {{ comment.comment }}
+                div(v-if="10 <= comments.length").more-comments
+                    a(v-if="false != paginationStatus" @click="getComments").waves-light.waves-effect.btn Еще комментарии
 </template>
 
 <script>
@@ -37,6 +39,7 @@
     import {showAlert} from "../../modules/alerts.js";
     import {checkToken, getToken} from '../../modules/token.js';
     Vue.use(VueSocketio, 'http://anime-music.ru:6001');
+    let skip, offset = 0;
 
     export default {
         sockets: {
@@ -61,19 +64,40 @@
                     user_id: 0,
                     post_title: this.$route.params.title
                 },
+                paginationStatus: true
             }
         },
         created() {
-            axios.post(
-                '/api/comments/anime/get', {
-                    seo_title: this.$route.params.title
-                }
-            ).then((response) => this.comments = response.data.response);
+            this.getComments()
         },
         methods: {
+            getComments() {
+                axios.post(
+                    '/api/comments/anime/get', {
+                        seo_title: this.$route.params.title,
+                        skip_pagination: skip,
+                    }
+                ).then(
+                    (response) => {
+                        offset++;
+                        skip = offset * 10;
+                        if (0 < this.comments.length) {
+                            this.comments.push(...response.data.response);
+                        } else {
+                            this.comments = response.data.response;
+                        }
+                        this.paginationStatus = true;
+                    }
+                ).catch(
+                    (error) => {
+                        showAlert('success-js_button--error', error.response.data.error_data, 'fa-times');
+                        this.paginationStatus = false;
+                    }
+                );
+            },
             addComment() {
                 if (!checkToken()) {
-                    showAlert('success-js_button--error', 'Вы должны авторизоваться', 'fa-times')
+                    alertify.notify('Вы должны авторизоваться', 'error', 3);
                     return false;
                 }
 
@@ -90,7 +114,7 @@
                     }
                 ).then(
                     (response) => {
-                        showAlert('success-js_button--success', 'Вы добавили комментарий', 'fa-check')
+                        alertify.notify('Вы добавили комментарий', 'success', 2);
                         this.comments.push(response.data.response);
                         this.newComment.comment = '';
                         this.newComment.reply_to_user_id = 0;
@@ -110,10 +134,10 @@
                     (error) => {
                         if (423 == error.response.status) {
                             for (let k in error.response.data.error_data) {
-                                showAlert('success-js_button--error', error.response.data.error_data[k], 'fa-times');
+                                alertify.notify(error.response.data.error_data[k], 'error', 2);
                             }
                         } else {
-                            showAlert('success-js_button--error', error.response.data.error_data, 'fa-times');
+                            alertify.notify(error.response.data.error_data, 'error', 3);
                         }
                     }
                 );
@@ -131,6 +155,14 @@
                 this.newComment.reply_to_user_id = 0;
                 this.newComment.reply_to_user_login = '';
                 this.newComment.reply_to_comment = 0;
+            },
+            showNewComments() {
+                if (0 == this.newComments.length) {
+                    return false;
+                }
+
+                this.comments.push(...this.newComments);
+                this.newComments = [];
             }
         },
         computed: {

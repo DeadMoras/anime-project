@@ -50,15 +50,15 @@ class LikesApi extends Controller
             return response()->json(
                 $error->changeErrorTrue()
                     ->addObject('error_code', 401)
-                    ->addObject(
-                        'error_data', 'Вы забыли указать токен'), 401);
+                    ->addObject('error_data', 'Вы забыли указать токен')
+                    ->getResponse(), 401);
         }
 
         $likesToPost = Like::where(
             [
-                ['user_entity_id', $userId,],
-                ['post_entity_id', $postId,],
-                ['bundle', $bundle,],
+                ['user_entity_id', $userId],
+                ['post_entity_id', $postId],
+                ['bundle', $bundle],
             ])
             ->first();
 
@@ -82,8 +82,7 @@ class LikesApi extends Controller
             return response()->json(
                 $error->changeErrorTrue()
                     ->addObject('error_code', 406)
-                    ->addObject(
-                        'error_data', 'Вы уже оценивали эту запись')
+                    ->addObject('error_data', 'Вы уже оценивали эту запись')
                     ->getResponse(), 406);
         }
     }

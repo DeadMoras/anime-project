@@ -17,6 +17,7 @@ class CreateUserInfoTable extends Migration
             $table->increments('id');
             $table->integer('entity_id');
             $table->string('login');
+            $table->string('city')->nullable();
             $table->tinyInteger('sex')->default(0); // 0 - man, 1 - wooman
             $table->string('vk')->nullable();
             $table->string('skype')->nullable();
